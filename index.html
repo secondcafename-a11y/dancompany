@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DANCOMPANY | 종합 비즈니스 솔루션 파트너</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            350: '#cbd5e1',
+                            655: '#475569'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- React & ReactDOM CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <!-- Babel CDN -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script>
+        // 클래식 런타임(React.createElement 방식) 프리셋 설정으로 로컬 브라우저 실행 에러 완전 차단
+        Babel.registerPreset('classic-react', {
+            presets: [
+                [Babel.availablePresets['react'], { runtime: 'classic' }]
+            ]
+        });
+    </script>
+
+    <!-- === VERCEL ANALYTICS INTEGRATION === -->
+    <!-- 브라우저 및 정적 호스팅 환경에서 트래픽을 정밀 측정하는 Vercel 공식 애널리틱스 트래커 구성 -->
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script src="/_vercel/insights/script.js"></script>
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            scroll-behavior: smooth;
+            /* 줄간격을 기존보다 시원하게 전역 세팅 */
+            line-height: 1.85 !important; 
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        /* 전역 리딩 조정자 */
+        p, span, li, textarea, input {
+            line-height: 1.85 !important;
+        }
+    </style>
+</head>
+<body class="bg-[#faf9f6] text-slate-900 dark:bg-[#08090d] dark:text-slate-100 text-base transition-colors duration-700 selection:bg-indigo-600 selection:text-white">
+    <div id="root"></div>
+
+    <!-- 클래식 React 런타임 프리셋을 사용하도록 설정 -->
+    <script type="text/babel" data-presets="classic-react">
+        const { useState, useEffect } = React;
+
+        // === HIGH-RESOLUTION STABLE UNSPLASH IMAGES ===
+        const IMAGES = {
+            heroConsulting: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80",
+            heroBooks: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=800&q=80",
+            heroWorkspace: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80",
+            heroStoreSign: "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?auto=format&fit=crop&w=800&q=80",
+            heroApp: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=800&q=80",
+
+            conceptInsight: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80",
+            conceptTech: "https://images.unsplash.com/photo-1605379399642-870262d3d051?auto=format&fit=crop&w=800&q=80",
+            conceptLogistics: "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?auto=format&fit=crop&w=800&q=80",
+            conceptEditorial: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=800&q=80",
+
+            valueInnovation: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80",
+            valueSynergy: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80",
+            valueGlobal: "https://images.unsplash.com/photo-1595246140625-573b715d11dc?auto=format&fit=crop&w=800&q=80",
+
+            serviceConsultingPrimary: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80",
+            serviceConsultingSecondary: "https://images.unsplash.com/photo-1531538606174-0f90ff5dce83?auto=format&fit=crop&w=800&q=80",
+
+            serviceDevPrimary: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?auto=format&fit=crop&w=800&q=80",
+            serviceDevSecondary: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80",
+
+            serviceEcomPrimary: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800&q=80",
+            serviceEcomSecondary: "https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=800&q=80",
+            serviceEcomExtra: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80",
+            serviceEcomClick: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=800&q=80",
+
+            servicePubPrimary: "https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?auto=format&fit=crop&w=800&q=80",
+            servicePubSecondary: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=800&q=80",
+
+            whyIntegration: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
+            whyTrendsetter: "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=800&q=80",
+            whyResult: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=80"
+        };
+
+        // === PREMIUM SVG ICONS ===
+        const SunIcon = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2m-7.07-14.07 1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2m-14.07 5.66-1.41 1.41m14.07-14.07-1.41 1.41"/></svg>
+        );
+
+        const MoonIcon = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        );
+
+        const ArrowUpRight = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        );
+
+        const CheckIcon = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
+        );
+
+        const CloseIcon = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        );
+
+        const MenuIcon = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        );
+
+        // === SAFE IMAGE COMPONENT ===
+        function SafeImage({ src, alt, className }) {
+            const [hasError, setHasError] = useState(false);
+
+            if (hasError || !src) {
+                return (
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-900/50 p-6 border border-slate-200 dark:border-white/5 relative z-10">
+                        <div className="p-4 rounded-full bg-slate-200 dark:bg-white/5 border border-slate-300 dark:border-white/10 shadow-inner mb-3">
+                            <svg className="w-8 h-8 text-indigo-600 dark:text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                <path d="M3 3v18h18" strokeLinecap="round"/>
+                                <path d="m18.7 8l-5.1 5.2-2.8-2.7L7 14.3" strokeLinecap="round"/>
+                            </svg>
+                        </div>
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider text-center">{alt}</span>
+                    </div>
+                );
+            }
+
+            return (
+                <img
+                    src={src}
+                    alt={alt}
+                    className={`${className} object-cover w-full h-full block transition-all duration-500`}
+                    onError={() => setHasError(true)}
+                />
+            );
+        }
+
+        const CORE_VALUES = [
+            {
+                title: "Insight (분석과 통찰)",
+                desc: "고착화된 관행을 무너뜨리고 정량화된 시장 데이터를 설계하여 비즈니스의 올바른 이정표를 확보합니다.",
+                tag: "Strategy",
+                image: IMAGES.valueInnovation
+            },
+            {
+                title: "Technology (기술 혁신)",
+                desc: "아이디어를 실제 작동하는 초고속 반응형 웹 아키텍처와 혁신적 모바일 앱으로 구현합니다.",
+                tag: "Engineering",
+                image: IMAGES.valueSynergy
+            },
+            {
+                title: "Global Commerce (세계로의 확장)",
+                desc: "국경을 무너뜨리는 물류 연동 및 글로벌 미디어를 융합해 브랜드 가치를 가속합니다.",
+                tag: "Borderless",
+                image: IMAGES.valueGlobal
+            }
+        ];
+
+        const PILLARS = [
+            {
+                id: "consulting",
+                num: "01",
+                category: "MANAGEMENT CONSULTING",
+                title: "경영 컨설팅 & 전략 마케팅",
+                sub: "데이터 기반의 날카로운 통찰력으로 시장의 헤게모니를 선점합니다",
+                strength: "단컴퍼니는 단순한 이론적 분석에 안주하지 않고, 실질적인 매출 지표와 브랜드 자산 가치의 영구적 도약을 실현하는 ‘실전형 파트너’입니다. 항공, 물류, 제조 등 다양한 산업군에 대한 정밀한 분석을 제공합니다.",
+                keyServices: [
+                    "기업 중장기 성장 전략 및 마켓 진입 전략(Go-To-Market) 수립",
+                    "소비자 세그먼트 분석 및 프리미엄 IMC 브랜드 디자인",
+                    "퍼포먼스 마케팅 구조 분석 및 광고 효율 극대화 솔루션"
+                ],
+                primaryImage: IMAGES.serviceConsultingPrimary,
+                secondaryImage: IMAGES.serviceConsultingSecondary
+            },
+            {
+                id: "it_system",
+                num: "02",
+                category: "IT SYSTEM & SYSTEM INTEGRATION",
+                title: "스마트 앱/웹 개발 & 시스템 구축",
+                sub: "아이디어를 현실로 치밀하게 구현하는 차세대 엔지니어링",
+                strength: "직관을 넘어서는 감각적 UX/UI 설계부터 고가용성 아키텍처에 이르기까지 비즈니스의 견고한 근간을 이룹니다. 최신 트렌드를 선제 적용해 기기의 경계가 없는 심리스한 반응형 플랫폼을 제공합니다.",
+                keyServices: [
+                    "iOS·Android 프리미엄 앱 개발 및 하이브리드 어플리케이션 구축",
+                    "반응형 웹사이트 및 최적화 반응형 랜딩페이지 제작",
+                    "물류 관리(WMS), 대용량 결제(PG), 맞춤형 ERP 및 SI 시스템 통합"
+                ],
+                primaryImage: IMAGES.serviceDevPrimary,
+                secondaryImage: IMAGES.serviceDevSecondary
+            },
+            {
+                id: "ecommerce",
+                num: "03",
+                category: "GLOBAL E-COMMERCE",
+                title: "글로벌 이커머스 & 유통 프로세스",
+                sub: "국경을 무력화하고 전 세계인의 일상 속에 고고한 오리지널리티를 전파합니다",
+                strength: "세계를 관통하는 K-트렌드의 거대한 파동을 가장 정확하고 우아한 방법으로 비즈니스 모델화합니다. 엄격한 품질 검증 과정을 통과한 하이엔드 라이프스타일 및 뷰티 브랜드를 글로벌 유통망에 안착시킵니다.",
+                keyServices: [
+                    "큐텐(Qoo10), 아마존(Amazon), 쇼피(Shopee) 글로벌 마켓플레이스 최적 포지셔닝 입점 및 자체 D2C 몰 운영",
+                    "글로벌 물류 배송 프로세스 최적화 및 주문 자동화 연동",
+                    "패션 뷰티 부티크 연계 마케팅 및 오프라인 쇼룸 활성화"
+                ],
+                primaryImage: IMAGES.serviceEcomPrimary,
+                secondaryImage: IMAGES.serviceEcomSecondary,
+                extraImage: IMAGES.serviceEcomExtra,
+                clickBtn: IMAGES.serviceEcomClick
+            },
+            {
+                id: "publishing",
+                num: "04",
+                category: "CULTURAL PUBLISHING",
+                title: "문화 콘텐츠 & 트렌디 출판 비즈니스",
+                sub: "독창적인 인사이트를 품은 프리미엄 도서, 무형 도서 및 미디어를 발행합니다",
+                strength: "시대를 관통하는 테마의 프리미엄 도서 기획을 수립하고 기획부터 글로벌 유통까지 한번에 해결합니다. 도서와 전자책(e-book) 유통망을 통해 지적 가치를 무한히 전파하며 온·오프라인의 경계를 허둡니다.",
+                keyServices: [
+                    "비즈니스 인사이트 및 미니멀 라이프스타일 분석 서적 기획·출판",
+                    "글로벌 도서, 전자책(e-book) 유통 체계 및 디지털 라이브러리 구축",
+                    "유튜브, SNS 등 뉴미디어를 연계한 크로스 브랜딩 콘텐츠 제작"
+                ],
+                primaryImage: IMAGES.servicePubPrimary,
+                secondaryImage: IMAGES.servicePubSecondary
+            }
+        ];
+
+        function App() {
+            const [darkMode, setDarkMode] = useState(false);
+            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+            const [activePillar, setActivePillar] = useState("consulting");
+            const [scrolled, setScrolled] = useState(false);
+
+            // Solution Planner State
+            const [plannerStep, setPlannerStep] = useState(1);
+            const [selectedIndustry, setSelectedIndustry] = useState("");
+            const [selectedChallenge, setSelectedChallenge] = useState("");
+            const [generatedSolution, setGeneratedSolution] = useState(null);
+
+            // Contact State
+            const [contactForm, setContactForm] = useState({
+                name: "",
+                email: "",
+                company: "",
+                serviceType: "consulting",
+                message: ""
+            });
+            const [isSubmitted, setIsSubmitted] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => {
+                    setScrolled(window.scrollY > 50);
+                };
+                window.addEventListener("scroll", handleScroll);
+                return () => window.removeEventListener("scroll", handleScroll);
+            }, []);
+
+            useEffect(() => {
+                const rootEl = document.documentElement;
+                if (darkMode) {
+                    rootEl.classList.add('dark');
+                } else {
+                    rootEl.classList.remove('dark');
+                }
+                
+                // [VERCEL ANALYTICS] 테마 전환 트래킹 이벤트 송출
+                if (typeof window.va === 'function') {
+                    window.va('event', { name: 'Theme Toggle', data: { theme: darkMode ? 'dark' : 'light' } });
+                }
+            }, [darkMode]);
+
+            const scrollToSection = (id) => {
+                setMobileMenuOpen(false);
+                const element = document.getElementById(id);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            };
+
+            const handleGenerateSolution = () => {
+                let result = {
+                    title: "",
+                    sub: "",
+                    desc: "",
+                    primaryImg: "",
+                    secondaryImg: "",
+                    steps: []
+                };
+
+                if (selectedChallenge === "consulting_marketing") {
+                    result = {
+                        title: "DAN 프리미엄 브랜드 부스터 & 마켓 진입 패키지",
+                        sub: "경영 전략 분석 ➔ 타깃 설계 ➔ 미디어 융합 전개",
+                        desc: "초기 마켓 안착의 무수한 리스크를 원천 제거하고, 브랜드 아이덴티티를 럭셔리급으로 가속하는 융합 플랜입니다.",
+                        primaryImg: IMAGES.heroWorkspace,
+                        secondaryImg: IMAGES.serviceConsultingSecondary,
+                        steps: [
+                            "정량 데이터 분석 기반 마켓 타깃 정밀 분류 수립",
+                            "하이엔드 비주얼 마케팅 중심의 반응형 랜딩 환경 고도화",
+                            "글로벌 인플루언서 네트워크 연계 크로스 IMC 론칭 캠페인"
+                        ]
+                    };
+                } else if (selectedChallenge === "it_system_dev") {
+                    result = {
+                        title: "고성능 하이브리드 모바일 앱 & 지능형 WMS 통합 패키지",
+                        sub: "안정성 99.9% 모바일 결제망 ➔ 물류 자동 통합 연동",
+                        desc: "기존의 불안정한 시스템 한계를 보완하고, 전 세계 구매 고객에게 우아하고 신속한 구매 인터페이스를 보장하는 테크 허브 구축안입니다.",
+                        primaryImg: IMAGES.heroApp,
+                        secondaryImg: IMAGES.serviceDevSecondary,
+                        steps: [
+                            "고성능 iOS·Android 대응 하이브리드 어플리케이션 개발 기획",
+                            "클라우드 오토스케일링 적용 대용량 결제 시스템 탑재",
+                            "창고 관리(WMS) 및 사내 데이터 정밀 ERP 연동 실시간 자동화"
+                        ]
+                    };
+                } else {
+                    result = {
+                        title: "K-Trend 글로벌 풀필먼트 및 프리미엄 미디어 브랜드 에디션",
+                        sub: "해외 몰 마케팅 포지셔닝 ➔ 글로벌 유통 ➔ 출판 브랜딩 연동",
+                        desc: "미주, 유럽, 아시아 D2C 시장으로 자체 제품과 독창적인 가치를 담은 책/미디어를 동시에 전파하는 크로스보더 패키지입니다.",
+                        primaryImg: IMAGES.heroBooks,
+                        secondaryImg: IMAGES.valueGlobal,
+                        steps: [
+                            "아마존 글로벌 FBA 연동 최적화 및 풀필먼트 물류 최적 솔루션 연동",
+                            "가치를 지적으로 축적시키는 고급 에디토리얼 북 제작 및 미디어 믹스 유통",
+                            "구매 욕구를 실시간 전환하는 숏폼 비주얼 SNS 마케팅 자동화 연계"
+                        ]
+                    };
+                }
+
+                setGeneratedSolution(result);
+                setPlannerStep(3);
+
+                // [VERCEL ANALYTICS] 솔루션 로드맵 생성 완료 추적 이벤트 송출
+                if (typeof window.va === 'function') {
+                    window.va('event', { 
+                        name: 'Generate Solution Blueprint', 
+                        data: { industry: selectedIndustry, challenge: selectedChallenge, solution: result.title } 
+                    });
+                }
+            };
+
+            const handleContactSubmit = (e) => {
+                e.preventDefault();
+                if (!contactForm.name || !contactForm.email || !contactForm.message) return;
+                setIsSubmitted(true);
+                
+                // [VERCEL ANALYTICS] 컨설팅 신청 폼 제출 추적 이벤트 송출
+                if (typeof window.va === 'function') {
+                    window.va('event', { 
+                        name: 'Contact Lead Submitted', 
+                        data: { company: contactForm.company, serviceType: contactForm.serviceType } 
+                    });
+                }
+
+                setContactForm({
+                    name: "",
+                    email: "",
+                    company: "",
+                    serviceType: "consulting",
+                    message: ""
+                });
+                setTimeout(() => setIsSubmitted(false), 5000);
+            };
+
+            return (
+                <div className={`min-h-screen font-sans transition-colors duration-700 selection:bg-indigo-600 selection:text-white ${darkMode ? 'bg-[#08090d] text-slate-100' : 'bg-[#faf9f6] text-slate-900'}`}>
+                    
+                    {/* BACKGROUND GLOW */}
+                    <div className="absolute top-0 left-0 w-full overflow-hidden pointer-events-none h-[1500px] z-0">
+                        <div className={`absolute top-[-10%] left-[-10%] w-[60%] h-[50%] rounded-full filter blur-[150px] opacity-25 ${darkMode ? 'bg-indigo-950/60' : 'bg-indigo-100'}`} />
+                        <div className={`absolute top-[40%] right-[-10%] w-[50%] h-[50%] rounded-full filter blur-[150px] opacity-20 ${darkMode ? 'bg-purple-950/50' : 'bg-purple-100'}`} />
+                    </div>
+
+                    {/* HEADER / NAVIGATION */}
+                    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? (darkMode ? 'bg-[#08090d]/85 backdrop-blur-xl border-b border-white/5 py-4' : 'bg-[#faf9f6]/85 backdrop-blur-xl border-b border-slate-200 py-4') : 'bg-transparent py-6'}`}>
+                        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+                            
+                            <div className="flex items-center gap-3 cursor-pointer group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                                <div className="relative w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-amber-500 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-indigo-500/10 transition-transform duration-500 group-hover:rotate-12">
+                                    D
+                                </div>
+                                <span className={`font-black text-xl sm:text-2xl tracking-tighter ${darkMode ? 'text-white' : 'text-slate-900'}`}>
+                                    DANCOMPANY
+                                </span>
+                            </div>
+
+                            <nav className={`hidden md:flex items-center gap-10 font-bold text-sm tracking-wide ${darkMode ? 'text-slate-300' : 'text-slate-605'}`}>
+                                <button onClick={() => scrollToSection('concept')} className="hover:text-indigo-500 transition-colors">Convergence</button>
+                                <button onClick={() => scrollToSection('about')} className="hover:text-indigo-500 transition-colors">About Us</button>
+                                <button onClick={() => scrollToSection('services')} className="hover:text-indigo-500 transition-colors">Our Services</button>
+                                <button onClick={() => scrollToSection('planner')} className="hover:text-indigo-500 transition-colors">Solution Configurator</button>
+                                
+                                <button 
+                                    onClick={() => setDarkMode(!darkMode)}
+                                    className={`p-2.5 rounded-xl transition-all border ${darkMode ? 'border-white/10 bg-white/5 text-amber-400 hover:bg-white/10' : 'border-slate-200 bg-slate-100 text-slate-800 hover:bg-slate-200'}`}
+                                    aria-label="Toggle Theme"
+                                >
+                                    {darkMode ? <SunIcon /> : <MoonIcon />}
+                                </button>
+
+                                <button 
+                                    onClick={() => scrollToSection('contact')} 
+                                    className="px-5 py-2.5 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold transition-all duration-300 transform hover:-translate-y-0.5 flex items-center gap-2 shadow-md shadow-indigo-600/10"
+                                >
+                                    Inquire Now <ArrowUpRight />
+                                </button>
+                            </nav>
+
+                            <div className="flex items-center gap-3 md:hidden">
+                                <button 
+                                    onClick={() => setDarkMode(!darkMode)}
+                                    className={`p-2.5 rounded-xl border ${darkMode ? 'border-white/10 bg-white/5 text-amber-400' : 'border-slate-200 bg-slate-100 text-slate-800'}`}
+                                >
+                                    {darkMode ? <SunIcon /> : <MoonIcon />}
+                                </button>
+                                <button 
+                                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                    className={`p-2.5 rounded-xl hover:bg-white/5 transition-colors ${darkMode ? 'text-slate-400' : 'text-slate-650'}`}
+                                >
+                                    {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
+                                </button>
+                            </div>
+
+                        </div>
+
+                        {mobileMenuOpen && (
+                            <div className={`md:hidden absolute top-20 left-0 w-full border-b flex flex-col p-8 gap-5 font-bold shadow-2xl transition-all duration-300 ${darkMode ? 'bg-[#08090d]/95 border-white/10 text-slate-100' : 'bg-white/95 border-slate-200 text-slate-900'}`}>
+                                <button onClick={() => scrollToSection('concept')} className="text-left py-2 hover:text-indigo-500 text-lg border-b border-slate-500/10">Convergence</button>
+                                <button onClick={() => scrollToSection('about')} className="text-left py-2 hover:text-indigo-500 text-lg border-b border-slate-500/10">About Us</button>
+                                <button onClick={() => scrollToSection('services')} className="text-left py-2 hover:text-indigo-500 text-lg border-b border-slate-500/10">Our Services</button>
+                                <button onClick={() => scrollToSection('planner')} className="text-left py-2 hover:text-indigo-500 text-lg border-b border-slate-500/10">Solution Configurator</button>
+                                <button 
+                                    onClick={() => scrollToSection('contact')} 
+                                    className="mt-4 w-full py-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-center transition-all flex items-center justify-center gap-2"
+                                >
+                                    Inquire Now <ArrowUpRight />
+                                </button>
+                            </div>
+                        )}
+                    </header>
+
+                    {/* HERO SECTION */}
+                    <section className="relative min-h-screen flex items-center justify-center px-6 pt-28 pb-16 overflow-hidden">
+                        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+                            
+                            <div className="lg:col-span-6 space-y-8 text-left">
+                                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 text-xs font-black uppercase tracking-widest animate-pulse">
+                                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                                    Comprehensive Premium Solution Partner
+                                </div>
+
+                                <h1 className={`text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.25] uppercase ${darkMode ? 'text-white' : 'text-slate-900'}`}>
+                                    경영에서 테크까지 <br />
+                                    <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-amber-500 dark:from-indigo-400 dark:via-purple-500 dark:to-amber-500 bg-clip-text text-transparent">
+                                        비즈니스의 한계를
+                                    </span> <br />
+                                    무너뜨리다.
+                                </h1>
+
+                                <p className="text-lg font-light tracking-wide max-w-xl border-l-4 border-indigo-600 pl-6 text-slate-500 dark:text-slate-400">
+                                    “경영 컨설팅, IT 시스템 구축, 글로벌 이커머스 및 문화 콘텐츠(출판) 사업을 융합하여 고객사의 비즈니스 가치를 극대화하는 종합 비즈니스 솔루션 파트너입니다.”
+                                </p>
+
+                                <p className={`text-base leading-relaxed max-w-lg ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                                    단컴퍼니(DANCOMPANY)	는 정적인 분석 대행에 머무르지 않습니다. 수억 건의 분석 전략, 즉각 가동 가능한 고성능 웹 쇼핑몰 및 모바일 앱 구축, 글로벌 물류 유통 프로세스, 지적 지평을 넓히는 출판의 연결을 직접 통합 증명합니다.
+                                </p>
+
+                                <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                                    <button 
+                                        onClick={() => scrollToSection('planner')}
+                                        className="px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-amber-500 hover:from-indigo-700 hover:to-amber-600 text-white font-black tracking-wider shadow-xl shadow-indigo-600/35 transition-all duration-300 transform hover:-translate-y-1 text-center flex items-center justify-center gap-3 text-sm"
+                                    >
+                                        솔루션 프로세스 확인 <ArrowUpRight />
+                                    </button>
+                                    <button 
+                                        onClick={() => scrollToSection('services')}
+                                        className={`px-8 py-4 rounded-xl font-bold tracking-wider border transition-all duration-300 text-center hover:scale-105 text-sm ${darkMode ? 'border-white/10 bg-white/5 hover:bg-white/10 text-white' : 'border-slate-300 bg-white hover:bg-slate-50 text-slate-800'}`}
+                                    >
+                                        핵심 사업 영역 보기
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* VISUAL COLLAGE */}
+                            <div className="lg:col-span-6 relative mt-12 lg:mt-0">
+                                <div className="grid grid-cols-12 gap-4">
+                                    
+                                    {/* Box 1: Desk Consulting / Workspace */}
+                                    <div className="col-span-7 group relative overflow-hidden rounded-2xl border border-slate-200 dark:border-white/5 shadow-2xl aspect-video bg-slate-900">
+                                        <SafeImage 
+                                            src={IMAGES.heroWorkspace} 
+                                            alt="Management consulting workspace" 
+                                            className="transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent flex items-end p-4 text-left">
+                                            <div>
+                                                <span className="text-[10px] font-bold text-indigo-400 block uppercase tracking-widest">Business 01</span>
+                                                <h3 className="text-sm font-black text-white">경영전략 & 컨설팅 데스크</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Box 2: Open Shop */}
+                                    <div className="col-span-5 group relative overflow-hidden rounded-2xl border border-slate-200 dark:border-white/5 shadow-2xl aspect-[4/5] -mt-6 bg-slate-900">
+                                        <SafeImage 
+                                            src={IMAGES.heroStoreSign} 
+                                            alt="Global E-Commerce storefront" 
+                                            className="transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent flex items-end p-4 text-left">
+                                            <div>
+                                                <span className="text-[10px] font-bold text-amber-400 block uppercase tracking-widest">Business 03</span>
+                                                <h3 className="text-sm font-black text-white">글로벌 물류 & 유통망</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Box 3: iPhone app development */}
+                                    <div className="col-span-5 group relative overflow-hidden rounded-2xl border border-slate-200 dark:border-white/5 shadow-2xl aspect-[3/4] -mt-10 bg-slate-900">
+                                        <SafeImage 
+                                            src={IMAGES.heroApp} 
+                                            alt="App interface preview" 
+                                            className="transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent flex items-end p-4 text-left">
+                                            <div>
+                                                <span className="text-[10px] font-bold text-emerald-400 block uppercase tracking-widest">Business 02</span>
+                                                <h3 className="text-sm font-black text-white">스마트 앱/웹 빌딩</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Box 4: Stacked books (Publishing) */}
+                                    <div className="col-span-7 group relative overflow-hidden rounded-2xl border border-slate-200 dark:border-white/5 shadow-2xl aspect-[4/3] mt-2 bg-slate-900">
+                                        <SafeImage 
+                                            src={IMAGES.heroBooks} 
+                                            alt="Stacked publishing materials" 
+                                            className="transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent flex items-end p-4 text-left">
+                                            <div>
+                                                <span className="text-[10px] font-bold text-purple-400 block uppercase tracking-widest">Business 04</span>
+                                                <h3 className="text-sm font-black text-white">문화 트렌드 & 북 릴리즈</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    {/* THE CORE CONCEPT CONVERGENCE SECTION */}
+                    <section id="concept" className={`py-24 border-t border-b transition-colors duration-500 ${darkMode ? 'border-white/5 bg-[#0b0c12]/60' : 'border-slate-200 bg-slate-100/40'}`}>
+                        <div className="max-w-7xl mx-auto px-6 text-center space-y-12">
+                            <div className="max-w-3xl mx-auto space-y-4">
+                                <span className="text-xs font-black text-indigo-500 uppercase tracking-widest block">The Ultimate Formula</span>
+                                <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight whitespace-nowrap block w-full text-center ${darkMode ? 'text-white' : 'text-slate-900'}`}>
+                                    4가지 성장의 축을 <span className="text-indigo-600 dark:text-indigo-400">완벽하게</span> 융합하다.
+                                </h2>
+                                <p className={`text-base leading-relaxed ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+                                    우리는 정량적 가치를 창조하는 모든 도메인을 유기적으로 장악하고 있습니다. 단순 위탁 대행사가 아닌, 고객사가 향후 도달해야 할 최종 비즈니스 마일스톤에 대한 마스터키가 되어 드립니다.
+                                </p>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                                {[
+                                    {
+                                        num: "01",
+                                        label: "Insight Desk",
+                                        title: "경영전략 컨설팅",
+                                        desc: "체계적인 기업 경영 진단 및 GTM 수립",
+                                        img: IMAGES.conceptInsight
+                                    },
+                                    {
+                                        num: "02",
+                                        label: "IT Engineering",
+                                        title: "앱 & 웹 코딩 아키텍처",
+                                        desc: "트래픽을 견디는 강력한 모바일·웹 솔루션",
+                                        img: IMAGES.conceptTech
+                                    },
+                                    {
+                                        num: "03",
+                                        label: "Global Logistics",
+                                        title: "글로벌 이커머스 유통",
+                                        desc: "해외 몰 입점 최적화 및 풀필먼트 연동",
+                                        img: IMAGES.conceptLogistics
+                                    },
+                                    {
+                                        num: "04",
+                                        label: "Premium Editorial",
+                                        title: "문화 출판 비즈니스",
+                                        desc: "브랜드 철학을 고고하게 전파하는 도서 기획",
+                                        img: IMAGES.conceptEditorial
+                                    }
+                                ].map((concept, idx) => (
+                                    <div 
+                                        key={idx} 
+                                        className={`rounded-2xl border p-6 flex flex-col justify-between group hover:border-indigo-500/50 transition-all duration-300 min-h-[300px] ${darkMode ? 'bg-[#0f111d] border-white/5' : 'bg-white border-slate-200'}`}
+                                    >
+                                        <div className="space-y-4 text-left">
+                                            <div className="flex justify-between items-center">
+                                                <span className="text-xs font-bold text-indigo-400">{concept.label}</span>
+                                                <span className="text-lg font-black text-indigo-600/30">/ {concept.num}</span>
+                                            </div>
+                                            <h3 className={`text-lg font-black ${darkMode ? 'text-white' : 'text-slate-900'}`}>{concept.title}</h3>
+                                            <p className="text-xs text-slate-400 leading-relaxed">{concept.desc}</p>
+                                        </div>
+                                        
+                                        <div className="rounded-xl overflow-hidden h-28 relative mt-6 bg-slate-900">
+                                            <SafeImage 
+                                                src={concept.img} 
+                                                alt={concept.title} 
+                                                className="transition-transform duration-500 group-hover:scale-110" 
+                                            />
+                                            <div className="absolute inset-0 bg-slate-950/20" />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* COMPANY ABOUT US SECTION */}
+                    <section id="about" className="py-32 px-6 max-w-7xl mx-auto">
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                            
+                            <div className="lg:col-span-5 space-y-8 text-left">
+                                <span className="text-sm font-black text-indigo-500 uppercase tracking-widest block">Corporate Identity</span>
+                                <h2 className={`text-3xl sm:text-4xl font-black tracking-tight leading-tight ${darkMode ? 'text-white' : 'text-slate-900'}`}>
+                                    시장의 흐름을 <br />
+                                    쫓는 것을 넘어 <br />
+                                    패러다임을 개척합니다.
+                                </h2>
+                                <p className={`text-sm sm:text-base leading-relaxed ${darkMode ? 'text-slate-400' : 'text-slate-605'}`}>
+                                    DANCOMPANY는 급변하는 글로벌 시장 환경 속에서 기업이 직면한 복잡한 문제를 해결하고, 새로운 기회를 창출하기 위해 설립되었습니다. 우리는 단순히 트렌드를 좇는 것에 그치지 않고, 시장 분석(Insight), 기술 혁신(Technology), 글로벌 인프라(Global Network)의 세 가지 축을 바탕으로 시장의 트렌드를 선도합니다.
+                                </p>
+
+                                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-500/10">
+                                    <div>
+                                        <h4 className="text-3xl font-black text-indigo-500">100%</h4>
+                                        <p className="text-xs text-slate-400 mt-1 font-bold">프로젝트 수직 매핑율</p>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-3xl font-black text-amber-500">Global</h4>
+                                        <p className="text-xs text-slate-400 mt-1 font-bold">큐텐·아마존·쇼피 즉각 대응</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="lg:col-span-7">
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                                    {CORE_VALUES.map((val, idx) => (
+                                        <div 
+                                            key={idx}
+                                            className={`p-6 rounded-2xl border space-y-6 flex flex-col justify-between group hover:border-indigo-500/50 transition-all duration-300 ${darkMode ? 'bg-[#0f111d] border-white/5' : 'bg-white border-slate-200'}`}
+                                        >
+                                            <div className="space-y-4 text-left">
+                                                <span className="px-3 py-1 rounded-md bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase">
+                                                    {val.tag}
+                                                </span>
+                                                <h3 className={`font-bold text-sm sm:text-base ${darkMode ? 'text-white' : 'text-slate-900'}`}>{val.title}</h3>
+                                                <p className="text-xs text-slate-400 leading-relaxed">{val.desc}</p>
+                                            </div>
+                                            <div className="rounded-xl overflow-hidden h-36 relative bg-slate-900">
+                                                <SafeImage 
+                                                    src={val.image} 
+                                                    alt={val.title} 
+                                                    className="transition-transform duration-500 group-hover:scale-110" 
+                                                />
+                                                <div className="absolute inset-0 bg-slate-950/20" />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    {/* DYNAMIC PILLARS SECTION */}
+                    <section id="services" className={`py-32 border-t border-b transition-colors duration-500 ${darkMode ? 'border-white/5 bg-[#0a0c12]/50' : 'border-slate-200 bg-slate-100/30'}`}>
+                        <div className="max-w-7xl mx-auto px-6">
+                            
+                            <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
+                                <span className="text-xs font-black text-indigo-500 uppercase tracking-widest block">Premium Domain Portfolio</span>
+                                <h2 className={`text-3xl sm:text-5xl font-black tracking-tight leading-none ${darkMode ? 'text-white' : 'text-slate-900'}`}>혁신 사업 분야별 상세 탐색</h2>
+                                <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm">
+                                    상단 탭을 통해 컨설팅 설계부터 문화 출판까지, 실제 업무 프로세스와 매칭되는 현장 이미지를 확인할 수 있습니다.
+                                </p>
+                            </div>
+
+                            <div className="flex flex-wrap items-center justify-center gap-3 mb-16">
+                                {PILLARS.map((p) => (
+                                    <button
+                                        key={p.id}
+                                        onClick={() => setActivePillar(p.id)}
+                                        className={`px-6 py-3 rounded-xl text-xs font-black tracking-wider uppercase transition-all duration-300 ${activePillar === p.id ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 scale-105' : `border border-slate-200 bg-slate-100 text-slate-800 hover:bg-slate-200`}`}
+                                    >
+                                        Business 0{p.num}
+                                    </button>
+                                ))}
+                            </div>
+
+                            {PILLARS.map((p) => {
+                                if (p.id !== activePillar) return null;
+                                return (
+                                    <div 
+                                        key={p.id}
+                                        className="grid grid-cols-1 lg:grid-cols-12 gap-12 p-8 sm:p-12 rounded-3xl border border-indigo-500/15 bg-gradient-to-br from-indigo-500/5 to-transparent backdrop-blur-xl animate-fade-in text-left"
+                                    >
+                                        
+                                        {/* Content side */}
+                                        <div className="lg:col-span-7 flex flex-col justify-between space-y-8">
+                                            <div className="space-y-6">
+                                                <span className="text-[10px] font-black text-indigo-400 uppercase tracking-widest bg-indigo-500/10 px-3 py-1.5 rounded-md border border-indigo-500/20">
+                                                    {p.category}
+                                                </span>
+                                                <h3 className={`text-2xl sm:text-4xl font-black tracking-tight ${darkMode ? 'text-white' : 'text-slate-900'}`}>{p.title}</h3>
+                                                <p className="text-sm font-bold text-indigo-400 italic leading-relaxed">{p.sub}</p>
+                                                
+                                                <div className="space-y-2">
+                                                    <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest">우리가 잘하는 것 (Our Strengths)</h4>
+                                                    <p className={`text-xs sm:text-sm leading-relaxed ${darkMode ? 'text-slate-355' : 'text-slate-700'}`}>
+                                                        {p.strength}
+                                                    </p>
+                                                </div>
+
+                                                <div className="space-y-3 pt-4 border-t border-slate-500/10">
+                                                    <h4 className="text-xs font-black text-indigo-400 uppercase tracking-widest">주요 서비스 내용 (Key Services)</h4>
+                                                    <div className="space-y-2">
+                                                        {p.keyServices.map((ks, i) => (
+                                                            <div key={i} className="flex items-start gap-3">
+                                                                <div className="w-5 h-5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                                                                    <CheckIcon />
+                                                                </div>
+                                                                <span className={`text-xs sm:text-sm font-semibold leading-relaxed ${darkMode ? 'text-slate-300' : 'text-slate-800'}`}>
+                                                                    {ks}
+                                                                </span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="pt-6">
+                                                <button 
+                                                    onClick={() => {
+                                                        setContactForm({
+                                                            ...contactForm,
+                                                            serviceType: p.id,
+                                                            message: `[${p.title}] 에 대한 맞춤 제안 및 예산 구동 방안에 대해 사전 진단을 의뢰합니다.`
+                                                        });
+                                                        scrollToSection('contact');
+                                                    }}
+                                                    className="px-6 py-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs transition-all inline-flex items-center gap-2 shadow-lg shadow-indigo-600/20"
+                                                >
+                                                    전문 진단 및 견적 타당성 신청하기 <ArrowUpRight />
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        {/* Imagery side */}
+                                        <div className="lg:col-span-5 flex flex-col justify-center space-y-4">
+                                            <div className="relative rounded-2xl overflow-hidden aspect-video border border-white/5 shadow-2xl group bg-slate-900">
+                                                <SafeImage 
+                                                    src={p.primaryImage} 
+                                                    alt="Primary business context visual" 
+                                                    className="transition-transform duration-700 group-hover:scale-105"
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-4">
+                                                    <span className="text-xs font-bold text-white">Main Core Visual Model</span>
+                                                </div>
+                                            </div>
+
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div className="rounded-2xl overflow-hidden h-28 border border-white/5 shadow-lg group relative bg-slate-900">
+                                                    <SafeImage 
+                                                        src={p.secondaryImage} 
+                                                        alt="Secondary support visual" 
+                                                        className="transition-transform duration-700 group-hover:scale-105"
+                                                    />
+                                                    <div className="absolute inset-0 bg-slate-950/40" />
+                                                </div>
+
+                                                {p.id === "ecommerce" && p.extraImage ? (
+                                                    <div className="rounded-2xl overflow-hidden h-28 border border-white/5 shadow-lg group relative bg-slate-900">
+                                                        <SafeImage 
+                                                          src={p.extraImage} 
+                                                          alt="Fashion Boutique detail" 
+                                                          className="transition-transform duration-700 group-hover:scale-105"
+                                                        />
+                                                    </div>
+                                                ) : (
+                                                    <div className={`p-4 rounded-2xl border flex flex-col justify-center text-left ${darkMode ? 'bg-white/5 border-white/5 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'}`}>
+                                                        <span className="text-[10px] font-black text-indigo-400 uppercase tracking-widest block mb-1">Process Status</span>
+                                                        <h5 className="font-black text-xs">수직 계열 통합 완료</h5>
+                                                        <p className="text-[9px] text-slate-400 mt-1">컨설팅 ➔ IT 개발 ➔ 물류 ➔ 유통 원스톱 대응</p>
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            {p.id === "ecommerce" && p.clickBtn && (
+                                                <div className="relative rounded-xl overflow-hidden border border-white/5 p-4 flex items-center justify-between bg-amber-500/10 text-left">
+                                                    <div>
+                                                        <h5 className="text-xs font-black text-amber-500">실시간 결제 모듈(WMS/PG) 탑재 가능</h5>
+                                                        <p className="text-[10px] text-slate-400 mt-1">즉각 구매 전환이 가능한 초속 인프라 시스템 구축 연동</p>
+                                                    </div>
+                                                    <div className="w-12 h-12 rounded-lg overflow-hidden border border-white/10 shrink-0 bg-slate-900">
+                                                        <SafeImage src={p.clickBtn} alt="Buy Now key" />
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                        </div>
+
+                                    </div>
+                                );
+                            })}
+
+                        </div>
+                    </section>
+
+                    {/* INTERACTIVE COMPREHENSIVE CONFIGURATOR */}
+                    <section id="planner" className="py-32 max-w-4xl mx-auto px-6">
+                        <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
+                            <span className="text-xs font-black text-indigo-500 uppercase tracking-widest px-4 py-2 rounded-full bg-indigo-500/10 block w-fit mx-auto font-bold">Advanced Blueprint Planner</span>
+                            
+                            {/* 3번 요청: "단컴퍼니 융합 비즈니스 프로세스 진행"이 한 줄에 들어오도록 whitespace-nowrap 보강 */}
+                            <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight leading-none whitespace-nowrap ${darkMode ? 'text-white' : 'text-slate-900'}`}>
+                                단컴퍼니 융합 비즈니스 프로세스 진행
+                            </h2>
+                            <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm">
+                                귀사가 해결하고자 하는 직관적인 문제를 아래 시각 카드에서 선택해 주십시오. <br />
+                                실전 배치용 솔루션 로드맵 가이드와 추천 실시간 포트폴리오를 매핑하여 제공합니다.
+                            </p>
+                        </div>
+
+                        <div className={`rounded-3xl border shadow-2xl p-8 sm:p-12 relative overflow-hidden text-left ${darkMode ? 'bg-[#0f111d]/90 border-white/10 backdrop-blur-xl' : 'bg-white border-slate-200'}`}>
+                            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-indigo-500 via-purple-600 to-amber-500" />
+                            
+                            <div className="flex items-center justify-between mb-12 pb-6 border-b border-slate-500/10">
+                                <div className="flex items-center gap-3">
+                                    <span className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${plannerStep >= 1 ? 'bg-indigo-600 text-white' : 'bg-slate-500/10 text-slate-400'}`}>1</span>
+                                    <span className="text-xs font-black hidden sm:inline">비즈니스 분야</span>
+                                </div>
+                                <div className="w-12 h-px bg-slate-500/20" />
+                                <div className="flex items-center gap-3">
+                                    <span className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${plannerStep >= 2 ? 'bg-indigo-600 text-white' : 'bg-slate-500/10 text-slate-400'}`}>2</span>
+                                    <span className="text-xs font-black hidden sm:inline">우선 과제 해결</span>
+                                </div>
+                                <div className="w-12 h-px bg-slate-500/20" />
+                                <div className="flex items-center gap-3">
+                                    <span className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs ${plannerStep >= 3 ? 'bg-indigo-600 text-white' : 'bg-slate-500/10 text-slate-400'}`}>3</span>
+                                    <span className="text-xs font-black hidden sm:inline">분석 결과 도출</span>
+                                </div>
+                            </div>
+
+                            {/* STEP 1 */}
+                            {plannerStep === 1 && (
+                                <div className="space-y-8 animate-fade-in">
+                                    <h3 className={`text-xl font-black ${darkMode ? 'text-white' : 'text-slate-900'}`}>Q1. 귀사 비즈니스의 메인 영역을 선택해 주십시오.</h3>
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                        {[
+                                            { id: 'fashion_cosmetics', label: '뷰티 & 라이프스타일 브랜드', desc: '고감도 브랜드와 이커머스 입점', img: IMAGES.serviceEcomSecondary },
+                                            { id: 'tech_platform', label: 'IT 테크 & 모바일 플랫폼', desc: '초고속 반응형 웹 및 앱 개발 연동', img: IMAGES.conceptTech },
+                                            { id: 'global_supply', label: '글로벌 유통 & 지식 출판', desc: '해외 크로스보더 몰 및 도서 보급', img: IMAGES.serviceEcomExtra }
+                                        ].map((ind) => (
+                                            <button
+                                                key={ind.id}
+                                                onClick={() => setSelectedIndustry(ind.id)}
+                                                className={`rounded-2xl overflow-hidden border text-left transition-all duration-300 flex flex-col justify-between h-52 bg-slate-900 ${selectedIndustry === ind.id ? 'border-indigo-500 ring-2 ring-indigo-500/20 bg-indigo-500/5' : 'border-slate-500/10 hover:border-slate-500/35'}`}
+                                            >
+                                                <div className="h-28 overflow-hidden relative w-full">
+                                                    <SafeImage src={ind.img} alt={ind.label} />
+                                                    <div className="absolute inset-0 bg-slate-950/20" />
+                                                </div>
+                                                <div className="p-4 space-y-1">
+                                                    <h4 className="font-extrabold text-xs sm:text-sm text-white">{ind.label}</h4>
+                                                    <p className="text-[10px] text-slate-400 leading-relaxed">{ind.desc}</p>
+                                                </div>
+                                            </button>
+                                        ))}
+                                    </div>
+
+                                    <div className="pt-6 flex justify-end">
+                                        <button
+                                            disabled={!selectedIndustry}
+                                            onClick={() => setPlannerStep(2)}
+                                            className="px-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 disabled:hover:bg-indigo-600 text-white font-black text-xs tracking-widest transition-all duration-300"
+                                        >
+                                            다음 단계 진행하기
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* STEP 2 */}
+                            {plannerStep === 2 && (
+                                <div className="space-y-8 animate-fade-in">
+                                    <h3 className={`text-xl font-black ${darkMode ? 'text-white' : 'text-slate-900'}`}>Q2. 어떤 허들을 가장 먼저 돌파하고 싶으십니까?</h3>
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                        {[
+                                            { id: 'consulting_marketing', label: '브랜드 가치 및 타깃 지평 확장', desc: '경영 컨설팅 & 프리미엄 데이터 브랜드 기획 수립', img: IMAGES.serviceConsultingPrimary },
+                                            { id: 'it_system_dev', label: '반응형 스마트 IT 시스템 고도화', desc: '초고속 웹 쇼핑몰, 앱 개발 및 PG/WMS 시스템 통합', img: IMAGES.serviceDevPrimary },
+                                            { id: 'global_crossborder', label: '해외 판로 개척 & 문화 출판 기획', desc: '아마존 크로스보더 입점 및 트렌디 북 릴리즈', img: IMAGES.servicePubPrimary }
+                                        ].map((chl) => (
+                                            <button
+                                                key={chl.id}
+                                                onClick={() => setSelectedChallenge(chl.id)}
+                                                className={`rounded-2xl overflow-hidden border text-left transition-all duration-300 flex flex-col justify-between h-52 bg-slate-900 ${selectedChallenge === chl.id ? 'border-indigo-500 ring-2 ring-indigo-500/20 bg-indigo-500/5' : 'border-slate-500/10 hover:border-slate-500/35'}`}
+                                            >
+                                                <div className="h-28 overflow-hidden relative w-full">
+                                                    <SafeImage src={chl.img} alt={chl.label} />
+                                                    <div className="absolute inset-0 bg-slate-950/20" />
+                                                </div>
+                                                <div className="p-4 space-y-1">
+                                                    <h4 className="font-extrabold text-xs sm:text-sm text-white">{chl.label}</h4>
+                                                    <p className="text-[10px] text-slate-400 leading-relaxed">{chl.desc}</p>
+                                                </div>
+                                            </button>
+                                        ))}
+                                    </div>
+
+                                    <div className="pt-6 flex justify-between">
+                                        <button
+                                            onClick={() => setPlannerStep(1)}
+                                            className={`px-6 py-3 rounded-xl border border-slate-500/20 text-xs font-bold hover:bg-slate-500/10 transition-all ${darkMode ? 'text-slate-200' : 'text-slate-850'}`}
+                                        >
+                                            이전으로
+                                        </button>
+                                        <button
+                                            disabled={!selectedChallenge}
+                                            onClick={handleGenerateSolution}
+                                            className="px-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 text-white font-black text-xs tracking-widest transition-all duration-300"
+                                        >
+                                            맞춤형 진단 출력
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* STEP 3 */}
+                            {plannerStep === 3 && generatedSolution && (
+                                <div className="space-y-8 animate-fade-in">
+                                    
+                                    <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                                        <div className="md:col-span-7 space-y-4">
+                                            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-500 uppercase tracking-widest">
+                                                <span>💡 Recommended Premium Pathway</span>
+                                            </div>
+                                            <h3 className={`text-xl sm:text-2xl font-black leading-tight ${darkMode ? 'text-white' : 'text-slate-900'}`}>
+                                                {generatedSolution.title}
+                                            </h3>
+                                            <p className="text-xs font-bold text-indigo-400 italic">{generatedSolution.sub}</p>
+                                            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                                                {generatedSolution.desc}
+                                            </p>
+                                        </div>
+
+                                        <div className="md:col-span-5 grid grid-cols-2 gap-2">
+                                            <div className="rounded-xl overflow-hidden h-28 relative shadow-lg bg-slate-900">
+                                                <SafeImage src={generatedSolution.primaryImg} alt="Primary solution visual" />
+                                            </div>
+                                            <div className="rounded-xl overflow-hidden h-28 relative shadow-lg bg-slate-900">
+                                                <SafeImage src={generatedSolution.secondaryImg} alt="Secondary solution visual" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-3 pt-6 border-t border-slate-500/10">
+                                        <h4 className="text-xs font-black uppercase text-slate-400 tracking-widest">추천 실행 로드맵 (Action Steps)</h4>
+                                        <div className="space-y-3">
+                                            {generatedSolution.steps.map((st, i) => (
+                                                <div key={i} className={`p-4 rounded-xl border flex items-center gap-4 ${darkMode ? 'bg-white/5 border-white/5 text-white' : 'bg-slate-50 border-slate-200 text-slate-900'}`}>
+                                                    <div className="w-7 h-7 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-xs shrink-0">
+                                                        {i+1}
+                                                    </div>
+                                                    <span className="text-xs sm:text-sm font-bold">{st}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="pt-6 flex flex-col sm:flex-row gap-4 justify-between">
+                                        <button
+                                            onClick={() => {
+                                                setSelectedIndustry("");
+                                                setSelectedChallenge("");
+                                                setGeneratedSolution(null);
+                                                setPlannerStep(1);
+                                            }}
+                                            className={`px-5 py-3 rounded-xl border border-slate-500/20 text-xs font-bold hover:bg-slate-500/10 transition-all text-center ${darkMode ? 'text-slate-200' : 'text-slate-850'}`}
+                                        >
+                                            다시 플래닝하기
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                setContactForm({
+                                                    ...contactForm,
+                                                    message: `[자가 맞춤 플래너 진단 결과]\n선택 솔루션: ${generatedSolution.title}\n로드맵에 따른 정밀 견적 및 타당성 분석 회신을 원합니다.`
+                                                });
+                                                scrollToSection('contact');
+                                            }}
+                                            className="px-6 py-4 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-amber-500 hover:from-indigo-700 text-white font-black text-xs tracking-wider shadow-lg shadow-indigo-600/25 transition-all text-center"
+                                        >
+                                            이 로드맵으로 견적 문의 메일 발송
+                                        </button>
+                                    </div>
+
+                                </div>
+                            )}
+
+                        </div>
+                    </section>
+
+                    {/* WHY US */}
+                    <section id="why-dan" className={`py-32 border-t transition-colors duration-500 ${darkMode ? 'border-white/5 bg-[#0a0c12]/50' : 'border-slate-200 bg-slate-100/30'}`}>
+                        <div className="max-w-7xl mx-auto px-6">
+                            
+                            <div className="text-center max-w-2xl mx-auto mb-20 space-y-4">
+                                <span className="text-sm font-black text-indigo-500 uppercase tracking-widest block">Core Competencies</span>
+                                <h2 className={`text-3xl sm:text-4xl font-black tracking-tight leading-none ${darkMode ? 'text-white' : 'text-slate-900'}`}>왜 DANCOMPANY 인가?</h2>
+                                <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm">
+                                    우리는 정적인 제안에서 머물지 않고 매출 지표와 유동 물류 프로세스를 직접 연동해 전개하는 확실한 파트너입니다.
+                                </p>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                {[
+                                    {
+                                        title: "통합 솔루션의 힘 (All-in-One)",
+                                        eng: "VERTICAL INTEGRATION",
+                                        desc: "전략 수립(컨설팅)부터 인프라 구축(IT 개발), 그리고 실전 판매 및 콘텐츠 확산(이커머스/출판)까지 비즈니스의 A부터 Z까지 한 번에 해결할 수 있는 유일무이한 파트너입니다.",
+                                        img: IMAGES.whyIntegration
+                                    },
+                                    {
+                                        title: "트렌드를 읽는 안목 (Trendsetters)",
+                                        eng: "AESTHETICS & INSIGHT",
+                                        desc: "우리는 시장 변화에 기민하게 대응하며, 하이 테크놀로지와 고감도 비주얼 믹스를 선구적으로 파악하여 소비자가 원하는 다음 패러다임을 한발 앞서 준비합니다.",
+                                        img: IMAGES.whyTrendsetter
+                                    },
+                                    {
+                                        title: "실전 중심의 성과 창출 (Result-Oriented)",
+                                        eng: "METRIC-DRIVEN PERFORMANCE",
+                                        desc: "이론에만 그치는 보고서가 아닌, 매출과 트래픽 등 눈에 보이는 정량적 성과로 가치를 증명합니다. 초고속 결제 및 정밀 물류 연계 아키텍처로 증대 효과를 보장합니다.",
+                                        img: IMAGES.whyResult
+                                    }
+                                ].map((item, idx) => (
+                                    <div 
+                                        key={idx}
+                                        className={`p-8 rounded-3xl border transition-all duration-300 hover:shadow-2xl flex flex-col justify-between ${darkMode ? 'bg-[#0f111d] border-white/5 hover:border-indigo-500/50' : 'bg-white border-slate-200'}`}
+                                    >
+                                        <div className="space-y-6 text-left">
+                                            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-amber-500 text-white flex items-center justify-center font-black text-sm shadow-md">
+                                                0{idx + 1}
+                                            </div>
+                                            <h3 className={`text-lg font-extrabold ${darkMode ? 'text-white' : 'text-slate-900'}`}>{item.title}</h3>
+                                            <span className="text-[10px] font-black text-indigo-500 uppercase tracking-wider block">{item.eng}</span>
+                                            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">{item.desc}</p>
+                                        </div>
+
+                                        <div className="rounded-2xl overflow-hidden h-32 relative mt-8 bg-slate-900">
+                                            <SafeImage src={item.img} alt={item.title} />
+                                            <div className="absolute inset-0 bg-slate-950/20" />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                        </div>
+                    </section>
+
+                    {/* CONTACT SECTION WITH SUCCESS MODAL */}
+                    <section id="contact" className={`py-32 border-t transition-colors duration-500 ${darkMode ? 'bg-[#08090d]/60 border-white/5' : 'bg-slate-100/50 border-slate-200'}`}>
+                        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-16">
+                            
+                            <div className="lg:col-span-5 flex flex-col justify-between space-y-12 text-left">
+                                <div className="space-y-6">
+                                    <span className="text-sm font-black text-indigo-500 uppercase tracking-widest block">Partnership Contact</span>
+                                    
+                                    {/* 4번 요청: "글로벌 융합 비즈니스의"에서 줄바꿈 반영 */}
+                                    <h2 className={`text-3xl sm:text-5xl font-black tracking-tight leading-[1.25] ${darkMode ? 'text-white' : 'text-slate-900'}`}>
+                                        글로벌융합비즈니스의<br/>
+                                        시작을 함께 하십시오
+                                    </h2>
+                                    <p className={`text-xs sm:text-sm leading-relaxed ${darkMode ? 'text-slate-300' : 'text-slate-655'}`}>
+                                        기획과 분석, 그리고 최고 성능의 IT 아키텍처 연계, 전 세계 무대로의 입점 유통이 단 하나의 채널로 해결되는 혁신을 제공합니다. 아래 양식을 입력해 주시면 DANCOMPANY의 부문 전문가가 직접 연락드리겠습니다.
+                                    </p>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <div className={`p-4 rounded-2xl border flex items-center gap-4 ${darkMode ? 'bg-[#0f111d] border-white/5' : 'bg-white border-slate-200'}`}>
+                                        <div className="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center shrink-0 text-xl">
+                                            📍
+                                        </div>
+                                        <div>
+                                            <h4 className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Office Location</h4>
+                                            <p className={`text-xs sm:text-sm font-extrabold mt-0.5 ${darkMode ? 'text-white' : 'text-slate-900'}`}>15 Dasanjungang-ro 82beon-gil, Namyaju-si, Gyeonggi-do, Korea.</p>
+                                        </div>
+                                    </div>
+
+                                    <div className={`p-4 rounded-2xl border flex items-center gap-4 ${darkMode ? 'bg-[#0f111d] border-white/5' : 'bg-white border-slate-200'}`}>
+                                        <div className="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center shrink-0 text-xl">
+                                            ✉️
+                                        </div>
+                                        <div>
+                                            <h4 className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">E-mail contact</h4>
+                                            <p className={`text-xs sm:text-sm font-extrabold mt-0.5 ${darkMode ? 'text-white' : 'text-slate-900'}`}>secondcafename@gmail.com | TEL: [02-5212-2705]</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="lg:col-span-7">
+                                <div className={`p-8 sm:p-10 rounded-3xl border shadow-2xl relative overflow-hidden ${darkMode ? 'bg-[#0f111d]/90 border-white/5 backdrop-blur-xl' : 'bg-white border-slate-200'}`}>
+                                    
+                                    {isSubmitted && (
+                                        <div className="absolute inset-0 bg-[#08090d]/95 rounded-3xl flex flex-col items-center justify-center p-8 text-center z-20 animate-fade-in">
+                                            <div className="w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mb-6">
+                                                <CheckIcon />
+                                            </div>
+                                            <h3 className="text-xl font-black text-white mb-2">사전 제안서 접수 완료</h3>
+                                            <p className="text-xs sm:text-sm text-slate-400 max-w-sm leading-relaxed">
+                                                단컴퍼니의 각 부문별 전담 위원단이 의뢰하신 목표 과제 및 인프라 한계 사안을 검토한 후, 24시간 내로 정밀 솔루션 회신 메일을 발송해 드리겠습니다.
+                                            </p>
+                                            <button 
+                                                onClick={() => setIsSubmitted(false)}
+                                                className="mt-6 px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs tracking-widest transition-all"
+                                            >
+                                                확인
+                                            </button>
+                                        </div>
+                                    )}
+
+                                    <h3 className={`text-lg font-black mb-8 text-left ${darkMode ? 'text-white' : 'text-slate-900'}`}>프리미엄 사전 진단 의뢰</h3>
+                                    
+                                    <form onSubmit={handleContactSubmit} className="space-y-6 text-left">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                            <div className="space-y-2">
+                                                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">성함 / 담당자 *</label>
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="Input your name"
+                                                    value={contactForm.name}
+                                                    onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                                                    className={`w-full px-5 py-4 text-xs sm:text-sm rounded-xl border outline-none focus:border-indigo-500 transition-all ${darkMode ? 'bg-[#08090d] border-white/5 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'}`}
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">e-mail *</label>
+                                                <input 
+                                                    type="email" 
+                                                    placeholder="name@company.com"
+                                                    value={contactForm.email}
+                                                    onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                                                    className={`w-full px-5 py-4 text-xs sm:text-sm rounded-xl border outline-none focus:border-indigo-500 transition-all ${darkMode ? 'bg-[#08090d] border-white/5 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'}`}
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                            <div className="space-y-2">
+                                                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">회사명 *</label>
+                                                <input 
+                                                    type="text" 
+                                                    placeholder="Input company name"
+                                                    value={contactForm.company}
+                                                    onChange={(e) => setContactForm({ ...contactForm, company: e.target.value })}
+                                                    className={`w-full px-5 py-4 text-xs sm:text-sm rounded-xl border outline-none focus:border-indigo-500 transition-all ${darkMode ? 'bg-[#08090d] border-white/5 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'}`}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">관심 있는 핵심 사업 분야 *</label>
+                                                <select 
+                                                    value={contactForm.serviceType}
+                                                    onChange={(e) => setContactForm({ ...contactForm, serviceType: e.target.value })}
+                                                    className={`w-full px-5 py-4 text-xs sm:text-sm rounded-xl border outline-none focus:border-indigo-500 transition-all ${darkMode ? 'bg-[#08090d] border-white/5 text-white' : 'bg-slate-50 border-slate-200 text-slate-800'}`}
+                                                >
+                                                    <option value="consulting">Business 01. 경영 컨설팅 & 전략 마케팅</option>
+                                                    <option value="it_system">Business 02. 스마트 앱/웹 개발 & 시스템 구축</option>
+                                                    <option value="ecommerce">Business 03. 글로벌 이커머스 & 출판 비즈니스</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Collaborative Target Details / Infrastructure Goals *</label>
+                                            <textarea 
+                                                rows="5"
+                                                placeholder="현재 상황의 어려움과 원하시는 정량 성과 목표를 편안하게 입력해 주십시오."
+                                                value={contactForm.message}
+                                                onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                                                className={`w-full px-5 py-4 text-xs sm:text-sm rounded-xl border outline-none focus:border-indigo-500 transition-all ${darkMode ? 'bg-[#08090d] border-white/5 text-white' : 'bg-[#faf9f6] border-slate-200 text-slate-800'}`}
+                                                required
+                                            ></textarea>
+                                        </div>
+
+                                        <button 
+                                            type="submit"
+                                            className="w-full py-5 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-amber-500 hover:from-indigo-700 hover:to-amber-600 text-white font-black text-xs sm:text-sm tracking-widest uppercase transition-all duration-300 shadow-xl shadow-indigo-600/25"
+                                        >
+                                            단컴퍼니 전문 융합 솔루션 의뢰하기
+                                        </button>
+
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    {/* FOOTER */}
+                    <footer className={`py-16 border-t transition-colors duration-500 ${darkMode ? 'bg-[#050608] border-white/5 text-slate-500' : 'bg-slate-900 border-slate-800 text-slate-400'}`}>
+                        <div className="max-w-7xl mx-auto px-6 space-y-12">
+                            
+                            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 pb-10 border-b border-white/5">
+                                <div className="space-y-3 text-left">
+                                    <span className="text-2xl font-black tracking-tight text-white">DANCOMPANY</span>
+                                    <p className="text-xs max-w-sm leading-relaxed">
+                                        경영 전략 컨설팅, 글로벌 미디어 출판, 그리고 스마트 IT 인프라 시스템 구축을 유기적으로 융합한 초일류 종합 비즈니스 솔루션 파트너.
+                                    </p>
+                                </div>
+                                
+                                <div className="flex flex-wrap items-center gap-8 text-xs font-bold tracking-widest uppercase">
+                                    <button onClick={() => scrollToSection('concept')} className="hover:text-white transition-colors">Convergence</button>
+                                    <button onClick={() => scrollToSection('about')} className="hover:text-white transition-colors">About Us</button>
+                                    <button onClick={() => scrollToSection('services')} className="hover:text-white transition-colors">Services</button>
+                                    <button onClick={() => scrollToSection('planner')} className="hover:text-white transition-colors">Configurator</button>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-xs leading-relaxed text-left">
+                                <div className="space-y-1.5">
+                                    <p>📍 Address: 15 Dasanjungang-ro 82beon-gil, Namyaju-si, Gyeonggi-do, Korea</p>
+                                    <p>✉️ e-mail: secondcafename@gmail.com | 📞 공식 연락처: TEL: [02-5212-2705]</p>
+                                </div>
+                                <div className="space-y-1.5 md:text-right">
+                                    <p>상호명: DANCOMPANY | 대표자명: [Youngsue Byun] | 사업자등록번호: [691-24-02116]</p>
+                                    <p>© 2026 DANCOMPANY. All rights reserved. Designed for Premium Business Performance.</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </footer>
+
+                </div>
+            );
+        }
+
+        // Render React 18 Entry point
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
