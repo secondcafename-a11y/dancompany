@@ -1,417 +1,490 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OnDongne — Don’t Buy, Just Share</title>
-<meta name="description" content="OnDongne is a pricetag-free neighborhood sharing app. Just upload a photo and AI writes the description. Complete pickups safely with PIN verification. Share 3 times a month and the next month is free.">
-<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<style>
-:root{
-  --or:#ea580c;--or-deep:#c2410c;--or-soft:#fff1e8;--or-line:#ffd9c2;
-  --gr:#16a34a;--gr-soft:#e9f8ef;
-  --ink:#241a12;--ink-2:#5b4d40;--ink-3:#94816f;
-  --cream:#fdf9f4;--card:#ffffff;--line:#efe5da;
-  --r-xl:28px;--r-lg:20px;--r-md:14px;
-  --shadow:0 2px 4px rgba(36,26,18,.04),0 18px 50px -16px rgba(194,65,12,.16);
-}
-*{box-sizing:border-box;margin:0;}
-html{scroll-behavior:smooth;}
-body{
-  font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  background:var(--cream);color:var(--ink);font-size:16px;line-height:1.7;letter-spacing:-.011em;
-  -webkit-font-smoothing:antialiased;
-}
-.wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
-a{color:inherit;text-decoration:none;}
-::selection{background:var(--or);color:#fff;}
-
-nav{position:sticky;top:0;z-index:50;background:rgba(253,249,244,.85);backdrop-filter:blur(14px) saturate(1.5);border-bottom:1px solid var(--line);}
-nav .wrap{display:flex;align-items:center;gap:26px;height:62px;}
-.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:18px;letter-spacing:-.02em;}
-.logo .mark{width:26px;height:26px;border-radius:9px;background:linear-gradient(135deg,var(--or),#ff8a3d);display:flex;align-items:center;justify-content:center;font-size:14px;}
-nav ul{display:flex;gap:22px;list-style:none;padding:0;margin-left:auto;}
-nav ul a{font-size:14px;font-weight:600;color:var(--ink-2);}
-nav ul a:hover{color:var(--or-deep);}
-.nav-cta{background:var(--or);color:#fff;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:999px;transition:all .15s;}
-.nav-cta:hover{background:var(--or-deep);transform:translateY(-1px);}
-@media(max-width:860px){nav ul{display:none;}}
-
-/* hero */
-.hero{padding:84px 0 40px;overflow:hidden;position:relative;}
-.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;}
-@media(max-width:900px){.hero .wrap{grid-template-columns:1fr;}}
-.hero .kicker{display:inline-flex;gap:8px;align-items:center;background:var(--or-soft);border:1px solid var(--or-line);color:var(--or-deep);font-size:12.5px;font-weight:800;padding:7px 15px;border-radius:999px;margin-bottom:22px;}
-.hero h1{font-size:clamp(36px,5.4vw,60px);font-weight:800;letter-spacing:-.04em;line-height:1.14;}
-.hero h1 em{font-style:normal;color:var(--or);}
-.hero .sub{margin-top:18px;font-size:clamp(15px,1.6vw,17.5px);color:var(--ink-2);max-width:480px;}
-.stores{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;}
-.store{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:#fff;border-radius:14px;padding:11px 20px;font-size:13px;font-weight:700;transition:transform .15s;}
-.store:hover{transform:translateY(-2px);}
-.store .os{font-size:19px;}
-.store small{display:block;font-size:10px;font-weight:500;opacity:.7;}
-.hero .tiny{margin-top:16px;font-size:12.5px;color:var(--ink-3);}
-/* phone */
-.phone-zone{display:flex;justify-content:center;position:relative;}
-.blob{position:absolute;inset:auto;width:420px;height:420px;border-radius:99px;background:radial-gradient(circle,rgba(234,88,12,.14),transparent 65%);z-index:0;}
-.phone{
-  width:290px;background:#fff;border-radius:38px;border:1px solid var(--line);
-  box-shadow:0 30px 80px -20px rgba(36,26,18,.25);padding:14px;position:relative;z-index:1;
-  transform:rotate(2.2deg);
-}
-.p-notch{width:90px;height:22px;background:var(--cream);border-radius:99px;margin:2px auto 12px;}
-.p-head{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800;padding:0 6px 10px;}
-.p-head .loc{color:var(--or-deep);}
-.p-card{background:var(--cream);border:1px solid var(--line);border-radius:18px;padding:12px;margin-bottom:10px;}
-.p-img{height:96px;border-radius:12px;background:linear-gradient(135deg,#ffe4cf,#ffd0ae);display:flex;align-items:center;justify-content:center;font-size:38px;}
-.p-t{font-size:13px;font-weight:800;margin-top:9px;}
-.p-m{font-size:10.5px;color:var(--ink-3);margin-top:2px;}
-.p-badges{display:flex;gap:5px;margin-top:8px;}
-.p-b{font-size:9.5px;font-weight:800;padding:3px 8px;border-radius:99px;background:var(--or-soft);color:var(--or-deep);}
-.p-b.g{background:var(--gr-soft);color:var(--gr);}
-/* Appointment Card */
-.p-appt{background:#fff;border:1.5px solid var(--gr);border-radius:16px;padding:12px;}
-.p-appt .ah{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:800;color:var(--gr);margin-bottom:7px;}
-.p-appt .row{display:flex;justify-content:space-between;font-size:11px;padding:3px 0;color:var(--ink-2);}
-.p-appt .row b{color:var(--ink);}
-.p-appt .pin{margin-top:8px;background:var(--gr-soft);border-radius:10px;text-align:center;padding:7px;font-size:11px;font-weight:800;color:var(--gr);letter-spacing:.28em;}
-.float{position:absolute;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:10px 14px;font-size:11.5px;font-weight:700;z-index:2;}
-.f1{top:36px;right:-6px;transform:rotate(-3deg);}
-.f1 b{color:var(--or-deep);}
-.f2{bottom:-8px;left:-26px;transform:rotate(2deg);}
-.f2 b{color:var(--gr);}
-@media(max-width:900px){.float{display:none;}}
-
-/* marquee strip */
-.strip{background:var(--or);color:#fff;padding:13px 0;overflow:hidden;white-space:nowrap;}
-.strip .in{display:inline-block;animation:mq 26s linear infinite;font-weight:700;font-size:13.5px;letter-spacing:.01em;}
-.strip span{margin:0 26px;opacity:.95;}
-@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-section{padding:92px 0;}
-.sec-k{font-size:12.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--or-deep);margin-bottom:12px;}
-.sec-h{font-size:clamp(25px,3.4vw,37px);font-weight:800;letter-spacing:-.032em;line-height:1.26;max-width:600px;}
-.sec-d{margin-top:12px;font-size:15.5px;color:var(--ink-2);max-width:600px;}
-.rev{opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s;}
-.rev.in{opacity:1;transform:none;}
-
-/* value 4 */
-.vals{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:42px;}
-.val{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:26px;transition:transform .2s,box-shadow .2s;}
-.val:hover{transform:translateY(-4px);box-shadow:var(--shadow);}
-.val .ic{width:46px;height:46px;border-radius:14px;background:var(--or-soft);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px;}
-.val h3{font-size:16.5px;font-weight:800;}
-.val p{font-size:13.5px;color:var(--ink-2);margin-top:7px;}
-
-/* flow */
-.flow4{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:42px;counter-reset:st;}
-.f-step{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;position:relative;}
-.f-step::before{counter-increment:st;content:"0" counter(st);font-size:13px;font-weight:800;color:var(--or);letter-spacing:.06em;}
-.f-step h3{font-size:16px;font-weight:800;margin:10px 0 7px;}
-.f-step p{font-size:13px;color:var(--ink-2);}
-.f-step .hint{margin-top:12px;font-size:11.5px;color:var(--or-deep);background:var(--or-soft);border-radius:9px;padding:7px 10px;font-weight:700;line-height:1.5;}
-
-/* trust */
-.trust-wrap{background:var(--ink);border-radius:var(--r-xl);color:#fff;padding:clamp(34px,4.6vw,58px);}
-.trust-wrap .sec-k{color:#ffb27d;}
-.trust-wrap .sec-h{color:#fff;}
-.trust-wrap .sec-d{color:#cbb9a9;}
-.trusts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:38px;}
-.tr{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.11);border-radius:var(--r-lg);padding:22px;}
-.tr .big{font-size:26px;font-weight:800;color:#ffb27d;letter-spacing:-.02em;}
-.tr h4{font-size:14.5px;font-weight:800;margin:8px 0 6px;}
-.tr p{font-size:12.5px;color:#cbb9a9;line-height:1.65;}
-/* temp gauge */
-.temp{margin-top:34px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.11);border-radius:var(--r-lg);padding:24px;display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center;}
-@media(max-width:680px){.temp{grid-template-columns:1fr;}}
-.temp .deg{font-size:46px;font-weight:800;color:#ffb27d;letter-spacing:-.03em;white-space:nowrap;}
-.temp .deg small{font-size:13px;color:#cbb9a9;display:block;font-weight:600;letter-spacing:0;}
-.tbar{height:10px;border-radius:99px;background:linear-gradient(90deg,#3b82f6,#22c55e 40%,#f59e0b 70%,#ef4444);position:relative;margin:10px 0 8px;}
-.tbar i{position:absolute;left:42%;top:-5px;width:20px;height:20px;border-radius:99px;background:#fff;border:4px solid var(--or);box-shadow:0 2px 8px rgba(0,0,0,.4);}
-.temp p{font-size:12.5px;color:#cbb9a9;}
-
-/* membership */
-.mem{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:42px;}
-.m{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r-lg);padding:28px;position:relative;display:flex;flex-direction:column;}
-.m.hot{border-color:var(--or);box-shadow:var(--shadow);}
-.m .mb{position:absolute;top:-11px;left:22px;background:var(--or);color:#fff;font-size:11px;font-weight:800;padding:3px 11px;border-radius:99px;}
-.m .st{font-size:11.5px;font-weight:800;color:var(--ink-3);letter-spacing:.08em;}
-.m h3{font-size:18px;font-weight:800;margin:6px 0 8px;}
-.m p{font-size:13px;color:var(--ink-2);flex:1;}
-.m .stamps{display:flex;gap:7px;margin-top:14px;}
-.stamp{width:34px;height:34px;border-radius:99px;border:2px dashed var(--or-line);display:flex;align-items:center;justify-content:center;font-size:15px;}
-.stamp.on{background:var(--or-soft);border-style:solid;border-color:var(--or);}
-
-/* compare table */
-.cmp{margin-top:42px;overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-lg);background:#fff;}
-.cmp table{width:100%;border-collapse:collapse;min-width:640px;font-size:14px;}
-.cmp th{text-align:left;padding:15px 18px;font-size:12.5px;font-weight:800;background:#faf5ef;border-bottom:1px solid var(--line);color:var(--ink-2);}
-.cmp th.us{background:var(--or-soft);color:var(--or-deep);}
-.cmp td{padding:14px 18px;border-bottom:1px solid #f6efe7;color:var(--ink-2);}
-.cmp tr:last-child td{border-bottom:0;}
-.cmp td.rowh{font-weight:800;color:var(--ink);white-space:nowrap;}
-.cmp td.us{background:#fff8f2;font-weight:700;color:var(--ink);}
-
-/* faq */
-.faqs{margin-top:42px;display:grid;gap:10px;max-width:800px;}
-.faq{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;}
-.faq summary{list-style:none;cursor:pointer;padding:18px 22px;font-size:15px;font-weight:700;display:flex;justify-content:space-between;gap:14px;align-items:center;}
-.faq summary::-webkit-details-marker{display:none;}
-.faq summary::after{content:"+";font-size:20px;color:var(--ink-3);transition:transform .2s;}
-.faq[open] summary::after{transform:rotate(45deg);}
-.faq .a{padding:0 22px 18px;font-size:13.5px;color:var(--ink-2);line-height:1.75;}
-.faq .a b{color:var(--ink);}
-
-/* cta */
-.cta{background:linear-gradient(135deg,var(--or),#ff8a3d);border-radius:var(--r-xl);color:#fff;text-align:center;padding:clamp(44px,6vw,76px) 24px;}
-.cta h2{font-size:clamp(26px,3.6vw,40px);font-weight:800;letter-spacing:-.035em;line-height:1.25;}
-.cta p{margin:14px auto 26px;font-size:15px;opacity:.95;max-width:440px;}
-.cta .stores{justify-content:center;}
-.cta .store{background:#fff;color:var(--ink);}
-
-footer{border-top:1px solid var(--line);padding:40px 0 56px;margin-top:92px;font-size:12.5px;color:var(--ink-3);}
-footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;}
-footer b{color:var(--ink);}
-</style>
+<meta charset="utf-8">
+<title>Ondongne — Don't sell it. Pass it on.</title>
+<meta name="description" content="Ondongne is a neighbourhood giving app with no price tags. One photo and AI writes the listing; a four-digit PIN closes every handover. Give three times a month and it stays free.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
 </head>
 <body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/modernist-ad825e67-e811-4493-a1e0-d0028e1316cc/styles.css">
+<script src="_ds/modernist-ad825e67-e811-4493-a1e0-d0028e1316cc/_ds_bundle.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --font-heading: "Archivo", system-ui, sans-serif;
+    --font-body: "Archivo", system-ui, sans-serif;
+  }
+  body { margin: 0; background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  img { display: block; max-width: 100%; }
+  a { color: var(--color-accent-700); text-decoration: none; }
+  a:hover { color: var(--color-accent); }
+  h1, h2, h3, h4 { margin: 0; font-family: var(--font-heading); letter-spacing: -0.02em; text-wrap: balance; }
+  p { margin: 0; text-wrap: pretty; }
+  @keyframes om-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes om-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  details > summary { list-style: none; cursor: pointer; }
+  details > summary::-webkit-details-marker { display: none; }
+  details[open] .om-plus { transform: rotate(45deg); }
+</style>
+</helmet>
 
-<nav>
-  <div class="wrap">
-    <a class="logo" href="#"><span class="mark">🧡</span>OnDongne</a>
-    <ul>
-      <li><a href="#how">How It Works</a></li>
-      <li><a href="#trust">Trust & Safety</a></li>
-      <li><a href="#free">Membership</a></li>
-      <li><a href="#faq">FAQ</a></li>
-    </ul>
-    <a class="nav-cta" href="#download">Get App</a>
-  </div>
-</nav>
+<div style="font-family: var(--font-body); background: var(--color-bg); color: var(--color-text); overflow-x: hidden;">
 
-<!-- ============ HERO ============ -->
-<header class="hero">
-  <div class="wrap">
-    <div>
-      <span class="kicker">🇰🇷 Korea · 🇯🇵 Japan — Priceless Neighbor Sharing</span>
-      <h1>Don’t buy,<br><em>just share.</em></h1>
-      <p class="sub">Items you no longer use can be exactly what a neighbor needs. No bargaining, no price tags — because it’s not a transaction. Just upload a photo, and AI writes the description for you.</p>
-      <div class="stores" id="download">
- <a class="store" href="https://apps.apple.com/kr/app/온동네-나눔/id6791496536"><span class="os">▶</span><span>App Store<small>Dwnlod FR iPhone</small></span></a>
-        <a class="store" href="https://play.google.com/store/apps/details?id=com.dancompany.ondongne&pcampaignid=web_share"><span class="os">▶</span><span>Google Play<small>Dwnlod FR Adroid</small></span></a>
-      </div>
-      <p class="tiny">First month free · Share 3 times a month to keep it free next month</p>
+  <header style="position: sticky; top: 0; z-index: 50; background: color-mix(in srgb, var(--color-bg) 93%, transparent); backdrop-filter: blur(8px); border-bottom: 2px solid var(--color-divider);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; gap: 20px;">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; color: var(--color-text);">
+        <img src="assets/logo-sm.png" alt="Ondongne" style="width: 34px; height: 34px;">
+        <span style="font-family: var(--font-heading); font-weight: 900; font-size: 20px; letter-spacing: -0.03em;">Ondongne</span>
+      </a>
+      <nav style="display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 14px; font-weight: 500; color: var(--color-neutral-700); margin-left: auto;">
+        <a href="#why" style="color: inherit;">Why us</a>
+        <a href="#screens" style="color: inherit;">The app</a>
+        <a href="#how" style="color: inherit;">How it works</a>
+        <a href="#trust" style="color: inherit;">Safeguards</a>
+        <a href="#free" style="color: inherit;">Membership</a>
+        <a href="#faq" style="color: inherit;">FAQ</a>
+      </nav>
+      <a href="#download" class="btn btn-primary" style="flex: none; font-size: 14px;">Download the app</a>
     </div>
-    <div class="phone-zone">
-      <div class="blob"></div>
-      <div class="float f1">✨ <b>AI wrote the post</b><br><span style="font-weight:500;color:var(--ink-3)">1 photo → Ready to share</span></div>
-      <div class="float f2">🔐 <b>PIN 4881 Verified</b><br><span style="font-weight:500;color:var(--ink-3)">Pickup completed safely</span></div>
-      <div class="phone">
-        <div class="p-notch"></div>
-        <div class="p-head">🧡 OnDongne <span class="loc">· Dasan-dong</span></div>
-        <div class="p-card">
-          <div class="p-img">🪑</div>
-          <div class="p-t">Kid’s Study Desk, gently used</div>
-          <div class="p-m">Dasan-dong · 500m · 3 requests</div>
-          <div class="p-badges"><span class="p-b">Free Share</span><span class="p-b g">Doorstep Drop-off</span></div>
+  </header>
+
+  <section id="top" style="border-bottom: 2px solid var(--color-divider);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));">
+      <div style="padding: clamp(40px, 6vw, 76px) 0; padding-right: clamp(0px, 4vw, 48px);">
+        <div style="display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: var(--color-accent-700);">
+          <span>KOREA · JAPAN</span>
+          <span style="width: 32px; height: 2px; background: var(--color-accent); display: block;"></span>
+          <span>NEIGHBOURHOOD GIVING, NO PRICE TAGS</span>
         </div>
-        <div class="p-appt">
-          <div class="ah">✓ Pickup Confirmed</div>
-          <div class="row"><span>When</span><b>Saturday 2:00 PM</b></div>
-          <div class="row"><span>Where</span><b>Doorstep Drop-off</b></div>
-          <div class="pin">PIN 4 8 8 1</div>
+        <h1 style="margin-top: 24px; font-size: clamp(44px, 8vw, 88px); line-height: 0.98; font-weight: 900;">
+          Don't sell it.<br><span style="color: var(--color-accent);">Pass it on.</span>
+        </h1>
+        <p style="margin-top: 24px; max-width: 32em; font-size: clamp(17px, 2vw, 19px); line-height: 1.65; color: var(--color-neutral-800);">
+          What you no longer use is exactly what someone nearby needs. No haggling, no price tags — because this was never a sale. Upload one photo and AI writes the listing for you.
+        </p>
+        <div id="download" style="margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px;">
+          <a href="https://apps.apple.com/app/id6791496536" class="btn btn-primary" style="padding: 15px 24px; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; line-height: 1.2; min-height: 56px;">
+            <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; opacity: 0.85;">APP STORE</span>
+            <span style="font-size: 17px; font-weight: 700;">Get it for iPhone</span>
+          </a>
+          <a href="https://play.google.com/store/apps/details?id=com.dancompany.ondongne&pcampaignid=web_share" class="btn btn-secondary" style="padding: 15px 24px; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; line-height: 1.2; min-height: 56px;">
+            <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: var(--color-neutral-700);">GOOGLE PLAY</span>
+            <span style="font-size: 17px; font-weight: 700;">Get it for Android</span>
+          </a>
+        </div>
+        <p style="margin-top: 18px; font-size: 14px; color: var(--color-neutral-700);">First month free · Give three times a month and the next month is free too</p>
+      </div>
+
+      <div style="padding: clamp(24px, 4vw, 56px) 0; padding-left: clamp(0px, 4vw, 48px); border-left: 2px solid var(--color-divider); display: flex; flex-direction: column; align-items: center; gap: 20px;">
+        <div style="width: 100%; max-width: 320px; border: 2px solid var(--color-text); background: #fff; box-shadow: var(--shadow-lg); overflow: hidden;">
+          <img src="assets/screen-home-sm.jpg" alt="Ondongne home feed — giveaway listings within walking distance" style="width: 100%;">
+        </div>
+        <div style="width: 100%; max-width: 320px; border: 2px solid var(--color-accent); background: var(--color-accent-100); padding: 16px;">
+          <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--color-accent-700);">✓ Handover confirmed</p>
+          <div style="margin-top: 14px; display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--color-neutral-700);">PIN</span>
+            <span style="display: flex; gap: 6px;">
+              <span style="width: 32px; height: 40px; border: 2px solid var(--color-text); display: grid; place-items: center; font-family: var(--font-heading); font-weight: 800; font-size: 19px;">4</span>
+              <span style="width: 32px; height: 40px; border: 2px solid var(--color-text); display: grid; place-items: center; font-family: var(--font-heading); font-weight: 800; font-size: 19px;">8</span>
+              <span style="width: 32px; height: 40px; border: 2px solid var(--color-text); display: grid; place-items: center; font-family: var(--font-heading); font-weight: 800; font-size: 19px;">8</span>
+              <span style="width: 32px; height: 40px; background: var(--color-accent); color: #fff; display: grid; place-items: center; font-family: var(--font-heading); font-weight: 800; font-size: 19px;">1</span>
+            </span>
+            <span style="margin-left: auto; font-size: 12px; font-weight: 700; color: var(--color-accent); animation: om-pulse 2.4s ease-in-out infinite;">Completed</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</header>
+  </section>
 
-<div class="strip"><div class="in">
-  <span>🎁 No selling, sharing only</span><span>✨ 1 photo is all AI needs</span><span>🔐 PIN-verified completion</span><span>🌡️ Trust starts at 36.5°</span><span>🎟️ Share 3 times for a free month</span>
-  <span>🎁 No selling, sharing only</span><span>✨ 1 photo is all AI needs</span><span>🔐 PIN-verified completion</span><span>🌡️ Trust starts at 36.5°</span><span>🎟️ Share 3 times for a free month</span>
-</div></div>
-
-<!-- ============ VALUES ============ -->
-<section>
-  <div class="wrap">
-    <div class="sec-k rev">Why OnDongne is Different</div>
-    <h2 class="sec-h rev">Not a marketplace freebie section,<br>but a community built entirely for sharing</h2>
-    <div class="vals">
-      <div class="val rev"><div class="ic">🎁</div><h3>Zero Price Tags</h3><p>Every item is 100% free. No awkward bargaining, no lowball offers — just pleasant neighborly chats.</p></div>
-      <div class="val rev"><div class="ic">✨</div><h3>AI Writes for You</h3><p>Simply upload photos. AI generates a clear description of the condition and pickup details in under a minute.</p></div>
-      <div class="val rev"><div class="ic">🔐</div><h3>PIN-Secured Handover</h3><p>A 4-digit code issued only to the receiver confirms completion, preventing any "never received it" disputes.</p></div>
-      <div class="val rev"><div class="ic">🌡️</div><h3>Share More, Pay Nothing</h3><p>Complete 3 shares a month and your next month's fee is waived. We reward generous actions, not subscriptions.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ HOW ============ -->
-<section id="how" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-k rev">How It Works</div>
-    <h2 class="sec-h rev">From listing to pickup in 4 steps,<br>designed to remove all friction</h2>
-    <p class="sec-d rev">We engineered solutions for every pain point in local sharing — scheduling conflicts, no-shows, and handover confirmation.</p>
-    <div class="flow4">
-      <div class="f-step rev">
-        <h3>Snap & Post</h3>
-        <p>Up to 5 photos, select a category, and tap ‘Write with AI’. You can also indicate doorstep drop-off preference.</p>
-        <div class="hint">Guidelines and prohibited items are clearly shown before posting</div>
-      </div>
-      <div class="f-step rev">
-        <h3>Request via Chat</h3>
-        <p>When neighbors request an item, pick one person to confirm. Others receive an automatic friendly notification.</p>
-        <div class="hint">Response deadlines are displayed, so you’ll never wait endlessly</div>
-      </div>
-      <div class="f-step rev">
-        <h3>Confirmed Schedule Card</h3>
-        <p>Time, location, and method lock into a card, issuing a PIN to the receiver. Calendar sync and cancel options included.</p>
-        <div class="hint">Need to reschedule? Cancel in 3 seconds — fostering respect over ghosting</div>
-      </div>
-      <div class="f-step rev">
-        <h3>PIN Verify & Review</h3>
-        <p>Complete the share with the PIN code. Friendly tag reviews ("Punctual", "Kind") raise Manner Temperature and add stamps.</p>
-        <div class="hint">Just tap tags to review — takes less than 10 seconds</div>
+  <sc-if value="{{ showTicker }}" hint-placeholder-val="{{ true }}">
+    <div style="border-bottom: 2px solid var(--color-divider); background: var(--color-text); color: var(--color-neutral-100); overflow: hidden; padding: 13px 0;">
+      <div style="display: flex; width: max-content; animation: om-marquee 34s linear infinite;">
+        <div style="display: flex; gap: 36px; padding-right: 36px; font-size: 15px; font-weight: 600; white-space: nowrap;">
+          <span>No selling, only giving</span><span style="color: var(--color-accent-400);">/</span>
+          <span>One photo, AI writes the listing</span><span style="color: var(--color-accent-400);">/</span>
+          <span>A four-digit PIN closes every handover</span><span style="color: var(--color-accent-400);">/</span>
+          <span>Neighbourly trust starts at 36.5°</span><span style="color: var(--color-accent-400);">/</span>
+          <span>Give three times, next month is free</span><span style="color: var(--color-accent-400);">/</span>
+        </div>
+        <div style="display: flex; gap: 36px; padding-right: 36px; font-size: 15px; font-weight: 600; white-space: nowrap;">
+          <span>No selling, only giving</span><span style="color: var(--color-accent-400);">/</span>
+          <span>One photo, AI writes the listing</span><span style="color: var(--color-accent-400);">/</span>
+          <span>A four-digit PIN closes every handover</span><span style="color: var(--color-accent-400);">/</span>
+          <span>Neighbourly trust starts at 36.5°</span><span style="color: var(--color-accent-400);">/</span>
+          <span>Give three times, next month is free</span><span style="color: var(--color-accent-400);">/</span>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </sc-if>
 
-<!-- ============ TRUST ============ -->
-<section id="trust" style="padding-top:0">
-  <div class="wrap">
-    <div class="trust-wrap rev">
-      <div class="sec-k">Trust & Safety</div>
-      <h2 class="sec-h">Not just “trust us”,<br>we built verifiable safeguards</h2>
-      <div class="trusts">
-        <div class="tr"><div class="big">1 Person 1 Account</div><h4>Phone Verification</h4><p>Sign in via Kakao, Naver, Google, or Apple — each real person is strictly limited to a single verified account.</p></div>
-        <div class="tr"><div class="big">4 Digits</div><h4>PIN Confirmation</h4><p>Completion requires a secure PIN issued only to the receiver, preventing delivery and receipt disputes entirely.</p></div>
-        <div class="tr"><div class="big">24 Hours</div><h4>Zero-Tolerance Moderation</h4><p>Reported listings are reviewed within 24 hours with immediate receipt confirmation sent to the reporter.</p></div>
-        <div class="tr"><div class="big">Neighborhood Level</div><h4>Approximate Location Only</h4><p>Public listings show only neighborhood names. Exact pickup details are shared only after a meet is confirmed.</p></div>
+  <section style="border-bottom: 2px solid var(--color-divider);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 6vw, 72px) 20px;">
+      <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">CIRCULAR BY DESIGN</p>
+      <h2 style="margin-top: 18px; max-width: 26em; font-size: clamp(28px, 4.4vw, 46px); line-height: 1.14; font-weight: 900;">What you were about to throw out <span style="color: var(--color-neutral-600);">starts a second life next door</span></h2>
+      <p style="margin-top: 20px; max-width: 46em; font-size: clamp(16px, 2vw, 18px); line-height: 1.75; color: var(--color-neutral-800);">Local giving keeps resources in circulation, cuts the waste that would otherwise go to disposal, and creates new use value for things that still work perfectly well.</p>
+      <div style="margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 2px; background: var(--color-divider);">
+        <div style="background: var(--color-bg); padding: 26px 24px;">
+          <p style="font-family: var(--font-heading); font-size: 15px; font-weight: 800; color: var(--color-accent);">01</p>
+          <h3 style="margin-top: 14px; font-size: 20px; font-weight: 800;">It circulates locally</h3>
+          <p style="margin-top: 10px; font-size: 15px; line-height: 1.65; color: var(--color-neutral-800);">No shipping, no warehouses. Things move by hand to a neighbour within walking distance.</p>
+        </div>
+        <div style="background: var(--color-bg); padding: 26px 24px;">
+          <p style="font-family: var(--font-heading); font-size: 15px; font-weight: 800; color: var(--color-accent);">02</p>
+          <h3 style="margin-top: 14px; font-size: 20px; font-weight: 800;">Less waste to dispose of</h3>
+          <p style="margin-top: 10px; font-size: 15px; line-height: 1.65; color: var(--color-neutral-800);">Before you pay for bulky-waste collection, the item gets one more chance to be used.</p>
+        </div>
+        <div style="background: var(--color-bg); padding: 26px 24px;">
+          <p style="font-family: var(--font-heading); font-size: 15px; font-weight: 800; color: var(--color-accent);">03</p>
+          <h3 style="margin-top: 14px; font-size: 20px; font-weight: 800;">New use value</h3>
+          <p style="margin-top: 10px; font-size: 15px; line-height: 1.65; color: var(--color-neutral-800);">The desk your child outgrew, the golf gloves you never wear — for someone else, exactly what they need today.</p>
+        </div>
       </div>
-      <div class="temp">
-        <div class="deg">36.5°<small>Starting score for every neighbor</small></div>
+    </div>
+  </section>
+
+  <section id="why" style="border-bottom: 2px solid var(--color-divider);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 6vw, 72px) 20px 0;">
+      <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">WHY ONDONGNE IS DIFFERENT</p>
+      <h2 style="margin-top: 18px; max-width: 24em; font-size: clamp(28px, 4.4vw, 46px); line-height: 1.14; font-weight: 900;">Not a giveaway board inside a resale app — <span style="color: var(--color-neutral-600);">a neighbourhood where giving is all there is</span></h2>
+    </div>
+    <div style="max-width: 1240px; margin: 44px auto 0; padding: 0 20px clamp(48px, 6vw, 72px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 28px;">
+      <div>
+        <span style="font-family: var(--font-heading); font-size: 15px; font-weight: 800; color: var(--color-accent);">01</span>
+        <h3 style="margin-top: 14px; padding-top: 14px; border-top: 2px solid var(--color-divider); font-size: 20px; font-weight: 800; line-height: 1.3;">There is no price field</h3>
+        <p style="margin-top: 12px; font-size: 15px; line-height: 1.65; color: var(--color-neutral-800);">Every listing is free. Nothing to haggle over, nothing to be talked down on — which makes the chat far easier.</p>
+      </div>
+      <div>
+        <span style="font-family: var(--font-heading); font-size: 15px; font-weight: 800; color: var(--color-accent);">02</span>
+        <h3 style="margin-top: 14px; padding-top: 14px; border-top: 2px solid var(--color-divider); font-size: 20px; font-weight: 800; line-height: 1.3;">AI writes the listing</h3>
+        <p style="margin-top: 12px; font-size: 15px; line-height: 1.65; color: var(--color-neutral-800);">Upload a photo and the condition and handover notes come back as natural sentences. Posting takes a minute.</p>
+      </div>
+      <div>
+        <span style="font-family: var(--font-heading); font-size: 15px; font-weight: 800; color: var(--color-accent);">03</span>
+        <h3 style="margin-top: 14px; padding-top: 14px; border-top: 2px solid var(--color-divider); font-size: 20px; font-weight: 800; line-height: 1.3;">A PIN closes it properly</h3>
+        <p style="margin-top: 12px; font-size: 15px; line-height: 1.65; color: var(--color-neutral-800);">A four-digit code issued only to the receiver confirms completion. “I got it / I didn't” disputes can't happen.</p>
+      </div>
+      <div>
+        <span style="font-family: var(--font-heading); font-size: 15px; font-weight: 800; color: var(--color-accent);">04</span>
+        <h3 style="margin-top: 14px; padding-top: 14px; border-top: 2px solid var(--color-divider); font-size: 20px; font-weight: 800; line-height: 1.3;">Giving makes it free</h3>
+        <p style="margin-top: 12px; font-size: 15px; line-height: 1.65; color: var(--color-neutral-800);">Give three times in a month and next month's fee is waived automatically. We reward giving instead of pushing payment.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="screens" style="border-bottom: 2px solid var(--color-divider); background: var(--color-surface);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 6vw, 72px) 20px;">
+      <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">THE APP</p>
+      <h2 style="margin-top: 18px; max-width: 22em; font-size: clamp(28px, 4.4vw, 46px); line-height: 1.14; font-weight: 900;">Have a look before you install</h2>
+      <div style="margin-top: 44px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 32px;">
         <div>
-          <div class="tbar"><i></i></div>
-          <p><b style="color:#fff">How Manner Temperature Works</b> — Rises with successful shares and positive tag reviews; drops with accumulated reports. Low scores restrict participation, while 3 consecutive safe shares reset warning flags. Unfair reports are reviewed and excluded.</p>
+          <div style="border: 2px solid var(--color-text); background: #fff; overflow: hidden;">
+            <img src="assets/screen-home-sm.jpg" alt="Home feed — listings within a few kilometres" style="width: 100%;">
+          </div>
+          <h3 style="margin-top: 18px; font-size: 18px; font-weight: 800;">Home — all giving, nothing else</h3>
+          <p style="margin-top: 8px; font-size: 15px; line-height: 1.65; color: var(--color-neutral-800);">The neighbourhood radius adjusts automatically to population density.</p>
+        </div>
+        <div>
+          <div style="border: 2px solid var(--color-text); background: #fff; overflow: hidden;">
+            <img src="assets/screen-post-sm.jpg" alt="Listing detail — photos and completion status" style="width: 100%;">
+          </div>
+          <h3 style="margin-top: 18px; font-size: 18px; font-weight: 800;">Listing — no price field</h3>
+          <p style="margin-top: 8px; font-size: 15px; line-height: 1.65; color: var(--color-neutral-800);">Photos, condition and handover method only. Status is either available or completed.</p>
+        </div>
+        <div>
+          <div style="border: 2px solid var(--color-text); background: #fff; overflow: hidden;">
+            <img src="assets/screen-profile-sm.jpg" alt="Profile — monthly giving count and manner temperature" style="width: 100%;">
+          </div>
+          <h3 style="margin-top: 18px; font-size: 18px; font-weight: 800;">Profile — your count and temperature</h3>
+          <p style="margin-top: 8px; font-size: 15px; line-height: 1.65; color: var(--color-neutral-800);">This month's giving, your manner temperature and your lifetime total, all on one screen.</p>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ============ MEMBERSHIP ============ -->
-<section id="free" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-k rev">Membership</div>
-    <h2 class="sec-h rev">Share regularly, stay free forever</h2>
-    <p class="sec-d rev">Built to reward sharing behavior rather than force subscriptions. No charges today, guaranteed.</p>
-    <div class="mem">
-      <div class="m rev">
-        <span class="st">STEP 1</span>
-        <h3>First Month Free Trial</h3>
-        <p>Enjoy full access for 30 days without entering any payment info. We’ll notify you 2 days before the trial ends.</p>
-        <div class="stamps"><span class="stamp">🎁</span><span class="stamp"></span><span class="stamp"></span></div>
+  <section id="how" style="border-bottom: 2px solid var(--color-divider);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 6vw, 72px) 20px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 32px; align-items: end;">
+        <div>
+          <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">HOW IT WORKS</p>
+          <h2 style="margin-top: 18px; font-size: clamp(28px, 4.4vw, 46px); line-height: 1.14; font-weight: 900;">Four steps from posting to done, <span style="color: var(--color-neutral-600);">with the vague parts removed</span></h2>
+        </div>
+        <p style="font-size: clamp(16px, 2vw, 17px); line-height: 1.7; color: var(--color-neutral-800);">Wherever neighbourly giving actually breaks down — arranging a time, no-shows, confirming it happened — we built in a safeguard.</p>
       </div>
-      <div class="m hot rev">
-        <span class="mb">How most neighbors use it</span>
-        <span class="st">STEP 2</span>
-        <h3>3 Shares / Mo = Free Next Month</h3>
-        <p>Complete 3 item shares this month and your next month’s subscription fee is automatically 100% waived.</p>
-        <div class="stamps"><span class="stamp on">🧡</span><span class="stamp on">🧡</span><span class="stamp on">🧡</span></div>
-      </div>
-      <div class="m rev">
-        <span class="st">STEP 3</span>
-        <h3>Short on shares? Warmth Pass</h3>
-        <p>Couldn't reach 3 shares? Keep full access with a flexible 30-day Warmth Pass. Remaining days stack automatically.</p>
-        <div class="stamps"><span class="stamp on">🧡</span><span class="stamp on">🧡</span><span class="stamp">🎟️</span></div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- ============ COMPARE ============ -->
-<section style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-k rev">Comparison</div>
-    <h2 class="sec-h rev">How is OnDongne different from regular secondhand apps?</h2>
-    <div class="cmp rev">
-      <table>
-        <thead><tr><th></th><th>Standard Marketplace Apps</th><th class="us">OnDongne</th></tr></thead>
-        <tbody>
-          <tr><td class="rowh">Pricing & Bargaining</td><td>Price wars, endless negotiations</td><td class="us">Zero price input field — 100% Free</td></tr>
-          <tr><td class="rowh">Free Item Visibility</td><td>Buried under thousands of paid listings</td><td class="us">Entire home feed is dedicated to sharing</td></tr>
-          <tr><td class="rowh">Handover Confirmation</td><td>Casual verbal "Thanks, got it"</td><td class="us">4-digit PIN authentication code</td></tr>
-          <tr><td class="rowh">Scheduling</td><td>Scattered chat messages ("sometime Sat")</td><td class="us">Time, place & cancel locked into one card</td></tr>
-          <tr><td class="rowh">Service Fee</td><td>Free (Heavy ad pop-ups)</td><td class="us">Always Free if you share 3 items/month</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- ============ FAQ ============ -->
-<section id="faq" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-k rev">FAQ</div>
-    <h2 class="sec-h rev">Frequently Asked Questions</h2>
-    <div class="faqs rev">
-      <details class="faq" open>
-        <summary>What if the other person doesn't show up?</summary>
-        <div class="a">On the appointment card, you can report a "No-Show" <b>within 48 hours after the scheduled time</b>. Repeated offenses will lower their Manner Temperature and restrict account access. If plans change, anyone can cancel with a single tap in 3 seconds — fostering respectful cancellations over ghosting.</div>
-      </details>
-      <details class="faq">
-        <summary>What items are strictly prohibited from sharing?</summary>
-        <div class="a">Opened food, medications, used cosmetics, critical safety gear (e.g., used child car seats, helmets), alcohol, tobacco, live pets, and bulk items intended for resale are prohibited. <b>The post creation screen provides full guidelines</b>, and non-compliant listings are reviewed with clear feedback.</div>
-      </details>
-      <details class="faq">
-        <summary>How long should I wait if a lister hasn't replied to my request?</summary>
-        <div class="a">The request screen displays <b>the lister’s response deadline</b>. If they do not respond within that timeframe, the turn automatically passes to the next requester, so you don't need to chase them up.</div>
-      </details>
-      <details class="faq">
-        <summary>Will other users be able to see my exact home address?</summary>
-        <div class="a">No. Public listings only display <b>the neighborhood district name</b>. Precise address details are shared exclusively with the confirmed recipient inside the secure appointment card, even for doorstep drop-offs.</div>
-      </details>
-      <details class="faq">
-        <summary>How does Manner Temperature increase or decrease?</summary>
-        <div class="a">It goes up with completed shares and warm tag reviews (e.g., "Very Punctual", "Friendly"), and drops when verified reports accumulate. <b>Malicious or unfair ratings are excluded after moderation</b>, and 3 consecutive safe shares will reset warning indicators. You can view your history on your profile.</div>
-      </details>
-      <details class="faq">
-        <summary>When and how much am I charged for using the app?</summary>
-        <div class="a"><b>Nothing is charged when you sign up.</b> Your first month is a completely free trial, and we notify you 2 days prior to expiration. If you share 3 items a month, the following month is automatically 100% free. You only purchase a 30-day Warmth Pass if you share less in a given month.</div>
-      </details>
-      <details class="faq">
-        <summary>How do I deal with rude or unpleasant users?</summary>
-        <div class="a">You can immediately <b>report and block</b> users via the top-right corner of the chat screen. Blocked users cannot message you or view your posts, and <b>they will not be notified of the block</b>. Reports receive an instant confirmation receipt and are audited within 24 hours.</div>
-      </details>
-    </div>
-  </div>
-</section>
-
-<!-- ============ CTA ============ -->
-<section style="padding-top:0">
-  <div class="wrap">
-    <div class="cta rev">
-      <h2>Items you don't use<br>can make a neighbor's day.</h2>
-      <p>Start with a single item sleeping at home today. It's the easiest way to make your community a warmer place.</p>
-      <div class="stores">
- <a class="store" href="https://apps.apple.com/kr/app/온동네-나눔/id6791496536"><span class="os">▶</span><span>App Store<small>Dwnlod FR iPhone</small></span></a>
-        <a class="store" href="https://play.google.com/store/apps/details?id=com.dancompany.ondongne&pcampaignid=web_share"><span class="os">▶</span><span>Google Play<small>Dwnlod FR Adroid</small></span></a>
+      <div style="margin-top: 44px; display: flex; flex-direction: column;">
+        <div style="border-top: 2px solid var(--color-divider); padding: 26px 0; display: grid; grid-template-columns: 56px minmax(min(100%, 180px), 1fr) minmax(min(100%, 260px), 1.2fr); gap: 12px 28px; align-items: start;">
+          <span style="font-family: var(--font-heading); font-size: 36px; font-weight: 900; line-height: 1; color: var(--color-accent);">1</span>
+          <h3 style="font-size: clamp(20px, 2.6vw, 24px); font-weight: 800; line-height: 1.25;">Photograph and post</h3>
+          <div>
+            <p style="font-size: 16px; line-height: 1.7; color: var(--color-neutral-800);">Up to five photos, pick a category, tap “Write with AI” and you're done. You can flag doorstep handover as your preference.</p>
+            <p style="margin-top: 12px; padding-left: 14px; border-left: 2px solid var(--color-accent); font-size: 14px; line-height: 1.6; color: var(--color-neutral-700);">Before you post, the giving rules and prohibited items appear on one screen</p>
+          </div>
+        </div>
+        <div style="border-top: 2px solid var(--color-divider); padding: 26px 0; display: grid; grid-template-columns: 56px minmax(min(100%, 180px), 1fr) minmax(min(100%, 260px), 1.2fr); gap: 12px 28px; align-items: start;">
+          <span style="font-family: var(--font-heading); font-size: 36px; font-weight: 900; line-height: 1; color: var(--color-accent);">2</span>
+          <h3 style="font-size: clamp(20px, 2.6vw, 24px); font-weight: 800; line-height: 1.25;">Request it in chat</h3>
+          <div>
+            <p style="font-size: 16px; line-height: 1.7; color: var(--color-neutral-800);">When several neighbours apply, the giver picks one and confirms the booking. Everyone else is notified automatically that it's closed.</p>
+            <p style="margin-top: 12px; padding-left: 14px; border-left: 2px solid var(--color-accent); font-size: 14px; line-height: 1.6; color: var(--color-neutral-700);">A reply deadline is shown, so nobody is left waiting on silence</p>
+          </div>
+        </div>
+        <div style="border-top: 2px solid var(--color-divider); padding: 26px 0; display: grid; grid-template-columns: 56px minmax(min(100%, 180px), 1fr) minmax(min(100%, 260px), 1.2fr); gap: 12px 28px; align-items: start;">
+          <span style="font-family: var(--font-heading); font-size: 36px; font-weight: 900; line-height: 1; color: var(--color-accent);">3</span>
+          <h3 style="font-size: clamp(20px, 2.6vw, 24px); font-weight: 800; line-height: 1.25;">The confirmation card</h3>
+          <div>
+            <p style="font-size: 16px; line-height: 1.7; color: var(--color-neutral-800);">Time, place and handover method are pinned to a card, and the receiver is issued a PIN. Add-to-calendar and cancel sit on the same screen.</p>
+            <p style="margin-top: 12px; padding-left: 14px; border-left: 2px solid var(--color-accent); font-size: 14px; line-height: 1.6; color: var(--color-neutral-700);">If plans change, cancelling takes three seconds — cancelling beats going quiet</p>
+          </div>
+        </div>
+        <div style="border-top: 2px solid var(--color-divider); border-bottom: 2px solid var(--color-divider); padding: 26px 0; display: grid; grid-template-columns: 56px minmax(min(100%, 180px), 1fr) minmax(min(100%, 260px), 1.2fr); gap: 12px 28px; align-items: start;">
+          <span style="font-family: var(--font-heading); font-size: 36px; font-weight: 900; line-height: 1; color: var(--color-accent);">4</span>
+          <h3 style="font-size: clamp(20px, 2.6vw, 24px); font-weight: 800; line-height: 1.25;">PIN and review</h3>
+          <div>
+            <p style="font-size: 16px; line-height: 1.7; color: var(--color-neutral-800);">Enter the PIN after the handover to close it. Tag reviews like “always on time” raise your manner temperature and earn a stamp.</p>
+            <p style="margin-top: 12px; padding-left: 14px; border-left: 2px solid var(--color-accent); font-size: 14px; line-height: 1.6; color: var(--color-neutral-700);">Just tap the tags — a review takes ten seconds</p>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<footer>
-  <div class="wrap">
-<div><b>OnDongne</b><br>Warm, pricetag-free neighbor sharing· <a class="한국어" href="https://dancompany.co.kr/develop/ondongne/index.html">한국어 · <a class="English" href="https://dancompany.co.kr/develop/ondongne/ondongne_en.html">English · <a class="日本語" href="https://dancompany.co.kr/develop/ondongne/ondongne_jp.html">日本語<br><br>Partnership & Press: help@ondongne.app</div>
+  <section id="trust" style="border-bottom: 2px solid var(--color-divider);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 6vw, 72px) 20px;">
+      <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">SAFEGUARDS</p>
+      <h2 style="margin-top: 18px; max-width: 26em; font-size: clamp(28px, 4.4vw, 46px); line-height: 1.14; font-weight: 900;">Not “trust us” — <span style="color: var(--color-neutral-600);">a structure you can verify</span></h2>
 
-    <div><b>Created by</b><br><a href="/" style="text-decoration:underline">DANCOMPANY</a> — Crafted with care from planning to development<br>© 2026 DANCOMPANY</div>
-  </div>
-</footer>
+      <div style="margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 2px; background: var(--color-divider);">
+        <div style="background: var(--color-surface); padding: 26px;">
+          <span class="tag tag-outline" style="font-size: 11px;">ONE PERSON, ONE ACCOUNT</span>
+          <h4 style="margin-top: 16px; font-size: 18px; font-weight: 800;">Phone number verification</h4>
+          <p style="margin-top: 10px; font-size: 14px; line-height: 1.65; color: var(--color-neutral-800);">Whichever sign-in you use, only one account can exist per real person.</p>
+        </div>
+        <div style="background: var(--color-surface); padding: 26px;">
+          <span class="tag tag-outline" style="font-size: 11px;">FOUR DIGITS</span>
+          <h4 style="margin-top: 16px; font-size: 18px; font-weight: 800;">PIN completion</h4>
+          <p style="margin-top: 10px; font-size: 14px; line-height: 1.65; color: var(--color-neutral-800);">A code issued only to the receiver confirms the handover, so the dispute never starts.</p>
+        </div>
+        <div style="background: var(--color-surface); padding: 26px;">
+          <span class="tag tag-outline" style="font-size: 11px;">24 HOURS</span>
+          <h4 style="margin-top: 16px; font-size: 18px; font-weight: 800;">Zero-tolerance reporting</h4>
+          <p style="margin-top: 10px; font-size: 14px; line-height: 1.65; color: var(--color-neutral-800);">Reported content is reviewed and acted on within 24 hours, with a confirmation the moment you file.</p>
+        </div>
+        <div style="background: var(--color-surface); padding: 26px;">
+          <span class="tag tag-outline" style="font-size: 11px;">DISTRICT LEVEL</span>
+          <h4 style="margin-top: 16px; font-size: 18px; font-weight: 800;">Approximate location only</h4>
+          <p style="margin-top: 10px; font-size: 14px; line-height: 1.65; color: var(--color-neutral-800);">Listings show the neighbourhood name. The exact spot is shared only once a handover is confirmed.</p>
+        </div>
+      </div>
 
-<script>
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
-document.querySelectorAll('.rev').forEach(el=>io.observe(el));
+      <div style="margin-top: 36px; background: var(--color-accent); color: #fff; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 28px; padding: clamp(28px, 4vw, 44px) clamp(24px, 3vw, 40px);">
+        <div>
+          <p style="font-family: var(--font-heading); font-size: clamp(52px, 8vw, 84px); font-weight: 900; line-height: 0.9; letter-spacing: -0.04em;">36.5°</p>
+          <p style="margin-top: 12px; font-size: 15px; font-weight: 600; color: color-mix(in srgb, #fff 82%, transparent);">Where every neighbour starts</p>
+        </div>
+        <p style="align-self: center; font-size: clamp(16px, 2vw, 17px); line-height: 1.75;">
+          <strong style="font-weight: 800;">How manner temperature works</strong> — completed handovers and warm tag reviews raise it; accumulated reports lower it. Fall too far and participation can be limited; three safe handovers in a row clear the warning. Unfair ratings are reviewed and excluded.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="free" style="border-bottom: 2px solid var(--color-divider);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 6vw, 72px) 20px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 32px; align-items: end;">
+        <div>
+          <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">MEMBERSHIP</p>
+          <h2 style="margin-top: 18px; font-size: clamp(28px, 4.4vw, 46px); line-height: 1.14; font-weight: 900;">Keep giving, keep it free</h2>
+        </div>
+        <p style="font-size: clamp(16px, 2vw, 17px); line-height: 1.7; color: var(--color-neutral-800);">The model rewards giving rather than nudging you towards payment. Nothing is charged today.</p>
+      </div>
+
+      <div style="margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 20px;">
+        <div style="border: 2px solid var(--color-divider); background: var(--color-neutral-100); padding: 28px 24px; display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-neutral-600);">STEP 1</span>
+          <h3 style="font-size: 22px; font-weight: 800; line-height: 1.3;">First month free</h3>
+          <p style="font-size: 15px; line-height: 1.65; color: var(--color-neutral-800);">Use everything for a month without entering payment details. We remind you two days before the trial ends.</p>
+        </div>
+        <div style="border: 2px solid var(--color-accent); background: var(--color-accent-100); padding: 28px 24px; display: flex; flex-direction: column; gap: 12px;">
+          <span style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">STEP 2 <span class="tag tag-accent" style="font-size: 10px; letter-spacing: 0.04em;">HOW MOST PEOPLE USE IT</span></span>
+          <h3 style="font-size: 22px; font-weight: 800; line-height: 1.3;">Three a month = next month free</h3>
+          <p style="font-size: 15px; line-height: 1.65; color: var(--color-neutral-800);">Complete three handovers this month and next month's fee is waived automatically. It renews monthly, so as long as you give, it stays free.</p>
+        </div>
+        <div style="border: 2px solid var(--color-divider); background: var(--color-neutral-100); padding: 28px 24px; display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-neutral-600);">STEP 3</span>
+          <h3 style="font-size: 22px; font-weight: 800; line-height: 1.3;">A warmth pass for quiet months</h3>
+          <p style="font-size: 15px; line-height: 1.65; color: var(--color-neutral-800);">Didn't reach three? Carry on with a 30-day warmth pass. Buy it while time remains and the days are added on top.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <sc-if value="{{ showComparison }}" hint-placeholder-val="{{ true }}">
+    <section style="border-bottom: 2px solid var(--color-divider);">
+      <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 6vw, 72px) 20px;">
+        <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">COMPARISON</p>
+        <h2 style="margin-top: 18px; font-size: clamp(28px, 4.4vw, 46px); line-height: 1.14; font-weight: 900;">How this differs from giveaways on a resale app</h2>
+        <div style="margin-top: 36px; overflow-x: auto;">
+          <table class="table" style="width: 100%; min-width: 640px;">
+            <thead>
+              <tr>
+                <th style="width: 22%;"></th>
+                <th style="font-weight: 700;">A typical resale app</th>
+                <th style="font-weight: 700; color: var(--color-accent-700);">Ondongne</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="font-weight: 700;">Price and haggling</td><td style="color: var(--color-neutral-700);">A culture of lowball offers</td><td style="font-weight: 600;">No price field exists at all</td></tr>
+              <tr><td style="font-weight: 700;">Visibility of giveaways</td><td style="color: var(--color-neutral-700);">Buried among listings for sale</td><td style="font-weight: 600;">The entire feed is giving only</td></tr>
+              <tr><td style="font-weight: 700;">Confirming completion</td><td style="color: var(--color-neutral-700);">A verbal “got it, thanks”</td><td style="font-weight: 600;">A four-digit PIN, verified</td></tr>
+              <tr><td style="font-weight: 700;">Arrangements</td><td style="color: var(--color-neutral-700);">“Sometime Saturday”, lost in chat</td><td style="font-weight: 600;">Time, place and cancel pinned to one card</td></tr>
+              <tr><td style="font-weight: 700;">Cost</td><td style="color: var(--color-neutral-700);">Free, with ads</td><td style="font-weight: 600;">Free for good, if you give three times a month</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <section style="border-bottom: 2px solid var(--color-divider); background: var(--color-surface);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 6vw, 72px) 20px;">
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: baseline; justify-content: space-between;">
+        <div>
+          <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">FROM NEIGHBOURS</p>
+          <h2 style="margin-top: 18px; font-size: clamp(28px, 4.4vw, 46px); line-height: 1.14; font-weight: 900;">Stories from neighbours who gave</h2>
+        </div>
+        <span class="tag tag-outline" style="font-size: 11px;">TRANSLATED FROM THE KOREAN REVIEWS</span>
+      </div>
+      <div style="margin-top: 36px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 20px;">
+        <div style="border: 2px dashed var(--color-neutral-400); background: var(--color-bg); padding: 26px 24px; min-height: 190px; display: flex; flex-direction: column; justify-content: space-between; gap: 20px;">
+          <p style="font-size: 16px; line-height: 1.7; color: var(--color-neutral-600);">I was about to buy a bulky-waste sticker, but a neighbour said it was exactly what she needed and took it away happily. I saved the disposal fee, she got what she wanted — good for both of us.</p>
+          <p style="font-size: 13px; font-weight: 700; color: var(--color-neutral-500);">Dudu · Dasan 1-dong · 3 handovers</p>
+        </div>
+        <div style="border: 2px dashed var(--color-neutral-400); background: var(--color-bg); padding: 26px 24px; min-height: 190px; display: flex; flex-direction: column; justify-content: space-between; gap: 20px;">
+          <p style="font-size: 16px; line-height: 1.7; color: var(--color-neutral-600);">I finally sorted out the clothes that kept piling up. Pieces that were still good but not my style, too nice to throw away — they were gone in no time.</p>
+          <p style="font-size: 13px; font-weight: 700; color: var(--color-neutral-500);">Bangsuni · Chunghyeon-dong · 10 handovers</p>
+        </div>
+        <div style="border: 2px dashed var(--color-neutral-400); background: var(--color-bg); padding: 26px 24px; min-height: 190px; display: flex; flex-direction: column; justify-content: space-between; gap: 20px;">
+          <p style="font-size: 16px; line-height: 1.7; color: var(--color-neutral-600);">The PIN is what turns a nominal giveaway into a real one. I read out the number, it was approved on the spot, and the stamp arrived right away.</p>
+          <p style="font-size: 13px; font-weight: 700; color: var(--color-neutral-500);">Kumachi Kumachi · Dasan 1-dong · 2 handovers</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="border-bottom: 2px solid var(--color-divider);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 6vw, 72px) 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 32px; align-items: start;">
+      <div>
+        <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">WHERE WE OPERATE</p>
+        <h2 style="margin-top: 18px; font-size: clamp(28px, 4.4vw, 46px); line-height: 1.14; font-weight: 900;">Korea and Japan, <span style="color: var(--color-neutral-600);">the same way of giving</span></h2>
+      </div>
+      <div style="display: grid; gap: 2px; background: var(--color-divider);">
+        <div style="background: var(--color-bg); padding: 22px 0; display: flex; flex-wrap: wrap; gap: 12px; align-items: baseline;">
+          <h3 style="font-size: 20px; font-weight: 800; min-width: 120px;">Korea</h3>
+          <p style="flex: 1; min-width: 200px; font-size: 15px; line-height: 1.65; color: var(--color-neutral-800);">Running district by district, centred on Seoul and the capital region. The neighbourhood radius adjusts to population density.</p>
+        </div>
+        <div style="background: var(--color-bg); padding: 22px 0; display: flex; flex-wrap: wrap; gap: 12px; align-items: baseline;">
+          <h3 style="font-size: 20px; font-weight: 800; min-width: 120px;">Japan</h3>
+          <p style="flex: 1; min-width: 200px; font-size: 15px; line-height: 1.65; color: var(--color-neutral-800);">A Japanese-language app and landing page run alongside. The giving rules and the PIN completion flow are identical.</p>
+        </div>
+        <div style="background: var(--color-bg); padding: 22px 0; display: flex; flex-wrap: wrap; gap: 12px; align-items: baseline;">
+          <h3 style="font-size: 20px; font-weight: 800; min-width: 120px;">Languages</h3>
+          <p style="flex: 1; min-width: 200px; font-size: 15px; line-height: 1.65; color: var(--color-neutral-800);">한국어 · English · 日本語 — switch from the footer below.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" style="border-bottom: 2px solid var(--color-divider);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 6vw, 72px) 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 40px; align-items: start;">
+      <div>
+        <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">FAQ</p>
+        <h2 style="margin-top: 18px; font-size: clamp(26px, 3.4vw, 40px); line-height: 1.16; font-weight: 900;">Answers before you write to us</h2>
+      </div>
+      <div>
+        <sc-for list="{{ faqs }}" as="item" hint-placeholder-count="7">
+          <details style="border-top: 2px solid var(--color-divider);">
+            <summary style="padding: 20px 0; display: flex; gap: 16px; align-items: baseline; font-size: 17px; font-weight: 700; line-height: 1.45; min-height: 56px;">
+              <span style="flex: 1;">{{ item.q }}</span>
+              <span class="om-plus" style="flex: none; width: 16px; height: 16px; position: relative; transition: transform 0.2s ease;">
+                <span style="position: absolute; inset: 7px 0 auto; height: 2px; background: var(--color-accent); display: block;"></span>
+                <span style="position: absolute; inset: 0 7px auto; width: 2px; height: 16px; background: var(--color-accent); display: block;"></span>
+              </span>
+            </summary>
+            <p style="padding: 0 24px 22px 0; font-size: 16px; line-height: 1.75; color: var(--color-neutral-800);">{{ item.a }}</p>
+          </details>
+        </sc-for>
+        <div style="border-top: 2px solid var(--color-divider);"></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background: var(--color-accent); color: #fff;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(56px, 8vw, 88px) 20px;">
+      <h2 style="max-width: 26em; font-size: clamp(32px, 6vw, 64px); line-height: 1.06; font-weight: 900;">What you no longer use is exactly what someone needs.</h2>
+      <p style="margin-top: 22px; max-width: 34em; font-size: clamp(17px, 2vw, 19px); line-height: 1.65; color: color-mix(in srgb, #fff 88%, transparent);">Start with one thing sitting unused at home today. That's how a neighbourhood gets warmer.</p>
+      <div style="margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px;">
+        <a href="https://apps.apple.com/app/id6791496536" style="background: #fff; color: var(--color-text); padding: 15px 26px; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; line-height: 1.2; font-weight: 700; min-height: 56px;">
+          <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: var(--color-neutral-700);">APP STORE</span>
+          <span style="font-size: 17px;">Get it for iPhone</span>
+        </a>
+        <a href="https://play.google.com/store/apps/details?id=com.dancompany.ondongne&pcampaignid=web_share" style="border: 2px solid #fff; color: #fff; padding: 13px 26px; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; line-height: 1.2; font-weight: 700; min-height: 56px;">
+          <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: color-mix(in srgb, #fff 82%, transparent);">GOOGLE PLAY</span>
+          <span style="font-size: 17px;">Get it for Android</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background: var(--color-text); color: var(--color-neutral-300);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(40px, 5vw, 56px) 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 28px;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <img src="assets/logo-sm.png" alt="Ondongne" style="width: 32px; height: 32px;">
+          <p style="font-family: var(--font-heading); font-size: 20px; font-weight: 900; color: #fff;">Ondongne</p>
+        </div>
+        <p style="margin-top: 12px; font-size: 14px; line-height: 1.6;">Warm neighbourhood giving, with no price tags</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px; font-size: 14px;">
+        <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: var(--color-neutral-500);">LANGUAGE</span>
+        <a href="index.html" style="color: var(--color-neutral-200);">한국어</a>
+        <a href="ondongne_en.html" style="color: var(--color-neutral-200);">English</a>
+        <a href="ondongne_jp.html" style="color: var(--color-neutral-200);">日本語</a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px; font-size: 14px;">
+        <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: var(--color-neutral-500);">CONTACT</span>
+        <a href="mailto:ondongne_service@gmail.com" style="color: var(--color-neutral-200);">Partnerships and press ondongne_service@gmail.com</a>
+        <p style="margin-top: 8px; line-height: 1.6;"><a href="https://dancompany.co.kr/" style="color: #fff; font-weight: 700;">DANCOMPANY</a> — built in-house, from planning through development and operations</p>
+        <p style="font-size: 13px; color: var(--color-neutral-500);">© 2026 DANCOMPANY</p>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showTicker&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Sections&quot;},&quot;showComparison&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Sections&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      showTicker: this.props.showTicker ?? true,
+      showComparison: this.props.showComparison ?? true,
+      faqs: [
+        { q: "What if the other person doesn't show up?", a: "You can report a no-show from the confirmation card within 48 hours of the arranged time. As those records accumulate, that neighbour's manner temperature falls and their participation is limited. If your own plans change, the cancel button on the card takes three seconds — please cancel rather than go quiet." },
+        { q: "Are there things I can't give away?", a: "Opened food, medicine and cosmetics; safety-critical second-hand items such as child car seats and helmets; alcohol and tobacco; animals; and bulk items intended for resale cannot be posted. The full list and the reasoning appear again on the posting screen, and any listing that breaches it is flagged with the reason." },
+        { q: "How long should I wait if nobody replies to my request?", a: "The giver's reply deadline is shown on the request screen. If there's no response within it, the turn passes automatically to the next person in line, so there's no need to chase." },
+        { q: "Will other people see my home address?", a: "No. Listings show only the neighbourhood name. The exact location is shared inside the confirmation card, and only with the person whose handover is confirmed. That holds for doorstep handovers too." },
+        { q: "How does manner temperature go up and down?", a: "Completed handovers and tag reviews (“kind”, “always on time” and so on) raise it; accumulated reports lower it. One-sided or unfair ratings are reviewed and excluded, and three safe handovers in a row clear a warning. You can see your own temperature history in your profile." },
+        { q: "When and how much am I charged?", a: "Nothing is charged when you sign up. The first month is a free trial, with a reminder two days before it ends. After that, giving three times a month makes the next month free automatically, so regular givers keep using it for nothing. Only in a month you don't reach three do you choose to buy a 30-day warmth pass." },
+        { q: "What do I do about an unpleasant neighbour?", a: "You can report or block from the top right of the chat screen. Once blocked, they can't message you or see your listings, and they aren't notified that you blocked them. Reports get a confirmation the moment you file and are reviewed within 24 hours." }
+      ]
+    };
+  }
+}
 </script>
 </body>
 </html>

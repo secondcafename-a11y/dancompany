@@ -1,426 +1,490 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>オンドンネ — 買わずに、ご近所でゆずり合う</title>
-<meta name="description" content="価格設定なしのご近所ゆずり合いアプリ「オンドンネ」。写真をアップするだけでAIが紹介文を作成、PINコードで安心取引完了。月に3回ゆずれば翌月は無料です。">
-<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<style>
-:root{
-  --or:#ea580c;--or-deep:#c2410c;--or-soft:#fff1e8;--or-line:#ffd9c2;
-  --gr:#16a34a;--gr-soft:#e9f8ef;
-  --ink:#241a12;--ink-2:#5b4d40;--ink-3:#94816f;
-  --cream:#fdf9f4;--card:#ffffff;--line:#efe5da;
-  --r-xl:28px;--r-lg:20px;--r-md:14px;
-  --shadow:0 2px 4px rgba(36,26,18,.04),0 18px 50px -16px rgba(194,65,12,.16);
-}
-*{box-sizing:border-box;margin:0;}
-html{scroll-behavior:smooth;}
-body{
-  font-family:"Pretendard Variable",Pretendard,"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",-apple-system,BlinkMacSystemFont,sans-serif;
-  background:var(--cream);color:var(--ink);font-size:16px;line-height:1.7;letter-spacing:-.011em;
-  -webkit-font-smoothing:antialiased;
-}
-.wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
-a{color:inherit;text-decoration:none;}
-::selection{background:var(--or);color:#fff;}
-
-nav{position:sticky;top:0;z-index:50;background:rgba(253,249,244,.85);backdrop-filter:blur(14px) saturate(1.5);border-bottom:1px solid var(--line);}
-nav .wrap{display:flex;align-items:center;gap:26px;height:62px;}
-.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:18px;letter-spacing:-.02em;}
-.logo .mark{width:26px;height:26px;border-radius:9px;background:linear-gradient(135deg,var(--or),#ff8a3d);display:flex;align-items:center;justify-content:center;font-size:14px;}
-nav ul{display:flex;gap:22px;list-style:none;padding:0;margin-left:auto;}
-nav ul a{font-size:14px;font-weight:600;color:var(--ink-2);}
-nav ul a:hover{color:var(--or-deep);}
-.nav-cta{background:var(--or);color:#fff;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:999px;transition:all .15s;}
-.nav-cta:hover{background:var(--or-deep);transform:translateY(-1px);}
-@media(max-width:860px){nav ul{display:none;}}
-
-/* hero */
-.hero{padding:84px 0 40px;overflow:hidden;position:relative;}
-.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;}
-@media(max-width:900px){.hero .wrap{grid-template-columns:1fr;}}
-.hero .kicker{display:inline-flex;gap:8px;align-items:center;background:var(--or-soft);border:1px solid var(--or-line);color:var(--or-deep);font-size:12.5px;font-weight:800;padding:7px 15px;border-radius:999px;margin-bottom:22px;}
-.hero h1{font-size:clamp(36px,5.4vw,60px);font-weight:800;letter-spacing:-.04em;line-height:1.14;}
-.hero h1 em{font-style:normal;color:var(--or);}
-.hero .sub{margin-top:18px;font-size:clamp(15px,1.6vw,17.5px);color:var(--ink-2);max-width:480px;}
-.stores{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;}
-.store{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:#fff;border-radius:14px;padding:11px 20px;font-size:13px;font-weight:700;transition:transform .15s;}
-.store:hover{transform:translateY(-2px);}
-.store .os{font-size:19px;}
-.store small{display:block;font-size:10px;font-weight:500;opacity:.7;}
-.hero .tiny{margin-top:16px;font-size:12.5px;color:var(--ink-3);}
-/* phone */
-.phone-zone{display:flex;justify-content:center;position:relative;}
-.blob{position:absolute;inset:auto;width:420px;height:420px;border-radius:99px;background:radial-gradient(circle,rgba(234,88,12,.14),transparent 65%);z-index:0;}
-.phone{
-  width:290px;background:#fff;border-radius:38px;border:1px solid var(--line);
-  box-shadow:0 30px 80px -20px rgba(36,26,18,.25);padding:14px;position:relative;z-index:1;
-  transform:rotate(2.2deg);
-}
-.p-notch{width:90px;height:22px;background:var(--cream);border-radius:99px;margin:2px auto 12px;}
-.p-head{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800;padding:0 6px 10px;}
-.p-head .loc{color:var(--or-deep);}
-.p-card{background:var(--cream);border:1px solid var(--line);border-radius:18px;padding:12px;margin-bottom:10px;}
-.p-img{height:96px;border-radius:12px;background:linear-gradient(135deg,#ffe4cf,#ffd0ae);display:flex;align-items:center;justify-content:center;font-size:38px;}
-.p-t{font-size:13px;font-weight:800;margin-top:9px;}
-.p-m{font-size:10.5px;color:var(--ink-3);margin-top:2px;}
-.p-badges{display:flex;gap:5px;margin-top:8px;}
-.p-b{font-size:9.5px;font-weight:800;padding:3px 8px;border-radius:99px;background:var(--or-soft);color:var(--or-deep);}
-.p-b.g{background:var(--gr-soft);color:var(--gr);}
-/* 약속 카드 */
-.p-appt{background:#fff;border:1.5px solid var(--gr);border-radius:16px;padding:12px;}
-.p-appt .ah{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:800;color:var(--gr);margin-bottom:7px;}
-.p-appt .row{display:flex;justify-content:space-between;font-size:11px;padding:3px 0;color:var(--ink-2);}
-.p-appt .row b{color:var(--ink);}
-.p-appt .pin{margin-top:8px;background:var(--gr-soft);border-radius:10px;text-align:center;padding:7px;font-size:11px;font-weight:800;color:var(--gr);letter-spacing:.28em;}
-.float{position:absolute;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:10px 14px;font-size:11.5px;font-weight:700;z-index:2;}
-.f1{top:36px;right:-6px;transform:rotate(-3deg);}
-.f1 b{color:var(--or-deep);}
-.f2{bottom:-8px;left:-26px;transform:rotate(2deg);}
-.f2 b{color:var(--gr);}
-@media(max-width:900px){.float{display:none;}}
-
-/* marquee strip */
-.strip{background:var(--or);color:#fff;padding:13px 0;overflow:hidden;white-space:nowrap;}
-.strip .in{display:inline-block;animation:mq 26s linear infinite;font-weight:700;font-size:13.5px;letter-spacing:.01em;}
-.strip span{margin:0 26px;opacity:.95;}
-@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-section{padding:92px 0;}
-.sec-k{font-size:12.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--or-deep);margin-bottom:12px;}
-.sec-h{font-size:clamp(25px,3.4vw,37px);font-weight:800;letter-spacing:-.032em;line-height:1.26;max-width:600px;}
-.sec-d{margin-top:12px;font-size:15.5px;color:var(--ink-2);max-width:600px;}
-.rev{opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s;}
-.rev.in{opacity:1;transform:none;}
-
-/* value 4 */
-.vals{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:42px;}
-.val{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:26px;transition:transform .2s,box-shadow .2s;}
-.val:hover{transform:translateY(-4px);box-shadow:var(--shadow);}
-.val .ic{width:46px;height:46px;border-radius:14px;background:var(--or-soft);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px;}
-.val h3{font-size:16.5px;font-weight:800;}
-.val p{font-size:13.5px;color:var(--ink-2);margin-top:7px;}
-
-/* flow */
-.flow4{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:42px;counter-reset:st;}
-.f-step{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;position:relative;}
-.f-step::before{counter-increment:st;content:"0" counter(st);font-size:13px;font-weight:800;color:var(--or);letter-spacing:.06em;}
-.f-step h3{font-size:16px;font-weight:800;margin:10px 0 7px;}
-.f-step p{font-size:13px;color:var(--ink-2);}
-.f-step .hint{margin-top:12px;font-size:11.5px;color:var(--or-deep);background:var(--or-soft);border-radius:9px;padding:7px 10px;font-weight:700;line-height:1.5;}
-
-/* trust */
-.trust-wrap{background:var(--ink);border-radius:var(--r-xl);color:#fff;padding:clamp(34px,4.6vw,58px);}
-.trust-wrap .sec-k{color:#ffb27d;}
-.trust-wrap .sec-h{color:#fff;}
-.trust-wrap .sec-d{color:#cbb9a9;}
-.trusts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:38px;}
-.tr{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.11);border-radius:var(--r-lg);padding:22px;}
-.tr .big{font-size:26px;font-weight:800;color:#ffb27d;letter-spacing:-.02em;}
-.tr h4{font-size:14.5px;font-weight:800;margin:8px 0 6px;}
-.tr p{font-size:12.5px;color:#cbb9a9;line-height:1.65;}
-/* temp gauge */
-.temp{margin-top:34px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.11);border-radius:var(--r-lg);padding:24px;display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center;}
-@media(max-width:680px){.temp{grid-template-columns:1fr;}}
-.temp .deg{font-size:46px;font-weight:800;color:#ffb27d;letter-spacing:-.03em;white-space:nowrap;}
-.temp .deg small{font-size:13px;color:#cbb9a9;display:block;font-weight:600;letter-spacing:0;}
-.tbar{height:10px;border-radius:99px;background:linear-gradient(90deg,#3b82f6,#22c55e 40%,#f59e0b 70%,#ef4444);position:relative;margin:10px 0 8px;}
-.tbar i{position:absolute;left:42%;top:-5px;width:20px;height:20px;border-radius:99px;background:#fff;border:4px solid var(--or);box-shadow:0 2px 8px rgba(0,0,0,.4);}
-.temp p{font-size:12.5px;color:#cbb9a9;}
-
-/* membership */
-.mem{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:42px;}
-.m{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r-lg);padding:28px;position:relative;display:flex;flex-direction:column;}
-.m.hot{border-color:var(--or);box-shadow:var(--shadow);}
-.m .mb{position:absolute;top:-11px;left:22px;background:var(--or);color:#fff;font-size:11px;font-weight:800;padding:3px 11px;border-radius:99px;}
-.m .st{font-size:11.5px;font-weight:800;color:var(--ink-3);letter-spacing:.08em;}
-.m h3{font-size:18px;font-weight:800;margin:6px 0 8px;}
-.m p{font-size:13px;color:var(--ink-2);flex:1;}
-.m .stamps{display:flex;gap:7px;margin-top:14px;}
-.stamp{width:34px;height:34px;border-radius:99px;border:2px dashed var(--or-line);display:flex;align-items:center;justify-content:center;font-size:15px;}
-.stamp.on{background:var(--or-soft);border-style:solid;border-color:var(--or);}
-
-/* compare table */
-.cmp{margin-top:42px;overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-lg);background:#fff;}
-.cmp table{width:100%;border-collapse:collapse;min-width:640px;font-size:14px;}
-.cmp th{text-align:left;padding:15px 18px;font-size:12.5px;font-weight:800;background:#faf5ef;border-bottom:1px solid var(--line);color:var(--ink-2);}
-.cmp th.us{background:var(--or-soft);color:var(--or-deep);}
-.cmp td{padding:14px 18px;border-bottom:1px solid #f6efe7;color:var(--ink-2);}
-.cmp tr:last-child td{border-bottom:0;}
-.cmp td.rowh{font-weight:800;color:var(--ink);white-space:nowrap;}
-.cmp td.us{background:#fff8f2;font-weight:700;color:var(--ink);}
-
-/* faq */
-.faqs{margin-top:42px;display:grid;gap:10px;max-width:800px;}
-.faq{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;}
-.faq summary{list-style:none;cursor:pointer;padding:18px 22px;font-size:15px;font-weight:700;display:flex;justify-content:space-between;gap:14px;align-items:center;}
-.faq summary::-webkit-details-marker{display:none;}
-.faq summary::after{content:"+";font-size:20px;color:var(--ink-3);transition:transform .2s;}
-.faq[open] summary::after{transform:rotate(45deg);}
-.faq .a{padding:0 22px 18px;font-size:13.5px;color:var(--ink-2);line-height:1.75;}
-.faq .a b{color:var(--ink);}
-
-/* cta */
-.cta{background:linear-gradient(135deg,var(--or),#ff8a3d);border-radius:var(--r-xl);color:#fff;text-align:center;padding:clamp(44px,6vw,76px) 24px;}
-.cta h2{font-size:clamp(26px,3.6vw,40px);font-weight:800;letter-spacing:-.035em;line-height:1.25;}
-.cta p{margin:14px auto 26px;font-size:15px;opacity:.95;max-width:440px;}
-.cta .stores{justify-content:center;}
-.cta .store{background:#fff;color:var(--ink);}
-
-footer{border-top:1px solid var(--line);padding:40px 0 56px;margin-top:92px;font-size:12.5px;color:var(--ink-3);}
-footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;}
-footer b{color:var(--ink);}
-</style>
+<meta charset="utf-8">
+<title>オンドンネ — 売らずに、シェアする</title>
+<meta name="description" content="値段のないご近所シェアアプリ、オンドンネ。写真1枚でAIが説明文を作成し、PINで確実に完了。月3回シェアすればずっと無料。">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
 </head>
 <body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/modernist-ad825e67-e811-4493-a1e0-d0028e1316cc/styles.css">
+<script src="_ds/modernist-ad825e67-e811-4493-a1e0-d0028e1316cc/_ds_bundle.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800;900&amp;family=Noto+Sans+JP:wght@400;700;900&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --font-heading: "Archivo", "Noto Sans JP", system-ui, sans-serif;
+    --font-body: "Archivo", "Noto Sans JP", system-ui, sans-serif;
+  }
+  body { margin: 0; background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  img { display: block; max-width: 100%; }
+  a { color: var(--color-accent-700); text-decoration: none; }
+  a:hover { color: var(--color-accent); }
+  h1, h2, h3, h4 { margin: 0; font-family: var(--font-heading); letter-spacing: -0.02em; text-wrap: balance; }
+  p { margin: 0; text-wrap: pretty; }
+  @keyframes om-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes om-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  details > summary { list-style: none; cursor: pointer; }
+  details > summary::-webkit-details-marker { display: none; }
+  details[open] .om-plus { transform: rotate(45deg); }
+</style>
+</helmet>
 
-<nav>
-  <div class="wrap">
-    <a class="logo" href="#"><span class="mark">🧡</span>オンドンネ</a>
-    <ul>
-      <li><a href="#how">ご利用方法</a></li>
-      <li><a href="#trust">安心の仕組み</a></li>
-      <li><a href="#free">メンバーシップ</a></li>
-      <li><a href="#faq">よくある質問</a></li>
-    </ul>
-    <a class="nav-cta" href="#download">アプリをダウンロード</a>
-  </div>
-</nav>
+<div style="font-family: var(--font-body); background: var(--color-bg); color: var(--color-text); overflow-x: hidden;">
 
-<!-- ============ HERO ============ -->
-<header class="hero">
-  <div class="wrap">
-    <div>
-      <span class="kicker">🇰🇷 韓国 · 🇯🇵 日本 — 売買なし、ご近所ゆずり合い</span>
-      <h1>買わずに、<br><em>ゆずり合う。</em></h1>
-      <p class="sub">使わなくなったモノが、誰かにとって今必要なモノに。値下げ交渉も価格表示もありません — そもそも「売買」ではないからです。写真を載せるだけで、AIが紹介文まで作成します。</p>
-      <div class="stores" id="download">
-  <a class="store" href="https://apps.apple.com/kr/app/온동네-나눔/id6791496536"><span class="os">▶</span><span>App Store<small>iPhoneでダウンロード</small></span></a>
-                <a class="store" href="https://play.google.com/store/apps/details?id=com.dancompany.ondongne&pcampaignid=web_share"><span class="os">▶</span><span>Google Play<small>Androidでダウンロード</small></span></a>
-      </div>
-      <p class="tiny">登録初月無料 · 月に3回ゆずれば翌月もずっと無料</p>
+  <header style="position: sticky; top: 0; z-index: 50; background: color-mix(in srgb, var(--color-bg) 93%, transparent); backdrop-filter: blur(8px); border-bottom: 2px solid var(--color-divider);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; gap: 20px;">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; color: var(--color-text);">
+        <img src="assets/logo-sm.png" alt="オンドンネ" style="width: 34px; height: 34px;">
+        <span style="font-family: var(--font-heading); font-weight: 900; font-size: 20px; letter-spacing: -0.03em;">オンドンネ</span>
+      </a>
+      <nav style="display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 14px; font-weight: 500; color: var(--color-neutral-700); margin-left: auto;">
+        <a href="#why" style="color: inherit;">選ばれる理由</a>
+        <a href="#screens" style="color: inherit;">アプリ画面</a>
+        <a href="#how" style="color: inherit;">使い方</a>
+        <a href="#trust" style="color: inherit;">安心の仕組み</a>
+        <a href="#free" style="color: inherit;">メンバーシップ</a>
+        <a href="#faq" style="color: inherit;">FAQ</a>
+      </nav>
+      <a href="#download" class="btn btn-primary" style="flex: none; font-size: 14px;">アプリをダウンロード</a>
     </div>
-    <div class="phone-zone">
-      <div class="blob"></div>
-      <div class="float f1">✨ <b>AIが紹介文を作成</b><br><span style="font-weight:500;color:var(--ink-3)">写真1枚 → 説明文が完成</span></div>
-      <div class="float f2">🔐 <b>PIN 4881 確認完了</b><br><span style="font-weight:500;color:var(--ink-3)">受渡が完了しました</span></div>
-      <div class="phone">
-        <div class="p-notch"></div>
-        <div class="p-head">🧡 オンドンネ <span class="loc">· 渋谷区</span></div>
-        <div class="p-card">
-          <div class="p-img">🪑</div>
-          <div class="p-t">子ども用デスク、綺麗に使いました</div>
-          <div class="p-m">渋谷区 · 500m · 申込 3人</div>
-          <div class="p-badges"><span class="p-b">無料おゆずり</span><span class="p-b g">置き配・玄関前OK</span></div>
+  </header>
+
+  <section id="top" style="border-bottom: 2px solid var(--color-divider);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));">
+      <div style="padding: clamp(40px, 6vw, 76px) 0; padding-right: clamp(0px, 4vw, 48px);">
+        <div style="display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: var(--color-accent-700);">
+          <span>韓国 · 日本</span>
+          <span style="width: 32px; height: 2px; background: var(--color-accent); display: block;"></span>
+          <span>値段のないご近所シェア</span>
         </div>
-        <div class="p-appt">
-          <div class="ah">✓ 約束が確定しました</div>
-          <div class="row"><span>日時</span><b>土曜日 午後 2:00</b></div>
-          <div class="row"><span>方法</span><b>玄関前での受け渡し</b></div>
-          <div class="pin">PIN 4 8 8 1</div>
+        <h1 style="margin-top: 24px; font-size: clamp(40px, 7vw, 80px); line-height: 1.08; font-weight: 900;">
+          売らずに、<br><span style="color: var(--color-accent);">シェアする。</span>
+        </h1>
+        <p style="margin-top: 24px; max-width: 30em; font-size: clamp(17px, 2vw, 19px); line-height: 1.75; color: var(--color-neutral-800);">
+          使わないモノが、誰かにとって必要なモノになる。値引き交渉も値札もありません — そもそも売買ではないからです。写真を1枚アップするだけで、AIが説明文まで書いてくれます。
+        </p>
+        <div id="download" style="margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px;">
+          <a href="https://apps.apple.com/jp/app/온동네-나눔/id6791496536" class="btn btn-primary" style="padding: 15px 24px; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; line-height: 1.2; min-height: 56px;">
+            <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; opacity: 0.85;">APP STORE</span>
+            <span style="font-size: 17px; font-weight: 700;">iPhoneで入手</span>
+          </a>
+          <a href="https://play.google.com/store/apps/details?id=com.dancompany.ondongne&amp;pcampaignid=web_share" class="btn btn-secondary" style="padding: 15px 24px; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; line-height: 1.2; min-height: 56px;">
+            <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: var(--color-neutral-700);">GOOGLE PLAY</span>
+            <span style="font-size: 17px; font-weight: 700;">Androidで入手</span>
+          </a>
+        </div>
+        <p style="margin-top: 18px; font-size: 14px; color: var(--color-neutral-700);">登録後、最初の1か月は無料 · 月3回シェアすると翌月も無料</p>
+      </div>
+
+      <div style="padding: clamp(24px, 4vw, 56px) 0; padding-left: clamp(0px, 4vw, 48px); border-left: 2px solid var(--color-divider); display: flex; flex-direction: column; align-items: center; gap: 20px;">
+        <div style="width: 100%; max-width: 320px; border: 2px solid var(--color-text); background: #fff; box-shadow: var(--shadow-lg); overflow: hidden;">
+          <img src="assets/jp-hero.jpg" alt="オンドンネ ホームフィード — 半径3kmのシェア投稿" style="width: 100%;">
+        </div>
+        <div style="width: 100%; max-width: 320px; border: 2px solid var(--color-accent); background: var(--color-accent-100); padding: 16px;">
+          <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--color-accent-700);">✓ 約束が確定しました</p>
+          <div style="margin-top: 14px; display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--color-neutral-700);">PIN</span>
+            <span style="display: flex; gap: 6px;">
+              <span style="width: 32px; height: 40px; border: 2px solid var(--color-text); display: grid; place-items: center; font-family: var(--font-heading); font-weight: 800; font-size: 19px;">4</span>
+              <span style="width: 32px; height: 40px; border: 2px solid var(--color-text); display: grid; place-items: center; font-family: var(--font-heading); font-weight: 800; font-size: 19px;">8</span>
+              <span style="width: 32px; height: 40px; border: 2px solid var(--color-text); display: grid; place-items: center; font-family: var(--font-heading); font-weight: 800; font-size: 19px;">8</span>
+              <span style="width: 32px; height: 40px; background: var(--color-accent); color: #fff; display: grid; place-items: center; font-family: var(--font-heading); font-weight: 800; font-size: 19px;">1</span>
+            </span>
+            <span style="margin-left: auto; font-size: 12px; font-weight: 700; color: var(--color-accent); animation: om-pulse 2.4s ease-in-out infinite;">受け渡し完了</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</header>
+  </section>
 
-<div class="strip"><div class="in">
-  <span>🎁 販売なし、おゆずりのみ</span><span>✨ 写真1枚でAIが文章作成</span><span>🔐 PINコードで安心完了</span><span>🌡️ 36.5°から始まるご近所の信頼</span><span>🎟️ 3回ゆずれば翌月無料</span>
-  <span>🎁 販売なし、おゆずりのみ</span><span>✨ 写真1枚でAIが文章作成</span><span>🔐 PINコードで安心完了</span><span>🌡️ 36.5°から始まるご近所の信頼</span><span>🎟️ 3回ゆずれば翌月無料</span>
-</div></div>
-
-<!-- ============ VALUES ============ -->
-<section>
-  <div class="wrap">
-    <div class="sec-k rev">オンドンネが選ばれる理由</div>
-    <h2 class="sec-h rev">フリマアプリの「無料掲示板」ではなく、<br>ゆずり合いだけのコミュニティです</h2>
-    <div class="vals">
-      <div class="val rev"><div class="ic">🎁</div><h3>価格の入力欄がありません</h3><p>すべての投稿が完全無料のおゆずりです。価格交渉や値下げ要求がないため、やり取りがとてもスムーズです。</p></div>
-      <div class="val rev"><div class="ic">✨</div><h3>AIが文章を代わりに作成</h3><p>写真をアップロードするだけで、状態や受渡方法の説明文を自然な文章で作成。出品までわずか1分です。</p></div>
-      <div class="val rev"><div class="ic">🔐</div><h3>PINコードで確実に完了</h3><p>受け取る側にのみ発行される4桁の番号で完了を確認。「受け取った・受け取っていない」のトラブルを防ぎます。</p></div>
-      <div class="val rev"><div class="ic">🌡️</div><h3>ゆずるほどずっと無料</h3><p>月に3回ゆずるだけで翌月の利用料が自動免除。課金を促すのではなく、ゆずり合いの行動に還元します。</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ HOW ============ -->
-<section id="how" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-k rev">ご利用の流れ</div>
-    <h2 class="sec-h rev">登録から完了まで4ステップ、<br>不安や曖昧さを徹底的になくしました</h2>
-    <p class="sec-d rev">ご近所でのやり取りで生じやすいトラブル — 日程調整、ドタキャン、受渡確認 — すべてに対策を用意しています。</p>
-    <div class="flow4">
-      <div class="f-step rev">
-        <h3>写真を撮って登録</h3>
-        <p>写真は最大5枚、カテゴリを選んで「AIで作成」を押すだけ。玄関前での受け渡しの希望も設定できます。</p>
-        <div class="hint">登録前にゆずり合いルールと禁止品目を同一画面でご案内します</div>
-      </div>
-      <div class="f-step rev">
-        <h3>チャットで申込み</h3>
-        <p>複数のご近所さんから申込みがあった場合、出品者が1人を選んで確定。他の方へは自動でお知らせします。</p>
-        <div class="hint">返信期限が表示されるため「返信が来ない」と待ち続ける心配がありません</div>
-      </div>
-      <div class="f-step rev">
-        <h3>受渡の確定カード</h3>
-        <p>日時・場所・受渡方法がカードとして固定され、受け取り手にPINを発行。カレンダー追加やキャンセルも簡単です。</p>
-        <div class="hint">急な予定変更も3秒でキャンセル — 音信不通を防ぐ文化をつくります</div>
-      </div>
-      <div class="f-step rev">
-        <h3>PIN確認 ＆ レビュー</h3>
-        <p>受渡後にPINコードを入力して完了。「時間をしっかり守る」などのタグラビューでマナー温度が上がり、スタンプが付与されます。</p>
-        <div class="hint">タグをタップするだけ — レビュー入力は10秒で完了します</div>
+  <sc-if value="{{ showTicker }}" hint-placeholder-val="{{ true }}">
+    <div style="border-bottom: 2px solid var(--color-divider); background: var(--color-text); color: var(--color-neutral-100); overflow: hidden; padding: 13px 0;">
+      <div style="display: flex; width: max-content; animation: om-marquee 34s linear infinite;">
+        <div style="display: flex; gap: 36px; padding-right: 36px; font-size: 15px; font-weight: 600; white-space: nowrap;">
+          <span>販売なし、シェアだけ</span><span style="color: var(--color-accent-400);">/</span>
+          <span>写真1枚でAIが説明文を作成</span><span style="color: var(--color-accent-400);">/</span>
+          <span>PINで確実に完了</span><span style="color: var(--color-accent-400);">/</span>
+          <span>36.5°から始まるご近所の信頼</span><span style="color: var(--color-accent-400);">/</span>
+          <span>月3回シェアすれば翌月無料</span><span style="color: var(--color-accent-400);">/</span>
+        </div>
+        <div style="display: flex; gap: 36px; padding-right: 36px; font-size: 15px; font-weight: 600; white-space: nowrap;">
+          <span>販売なし、シェアだけ</span><span style="color: var(--color-accent-400);">/</span>
+          <span>写真1枚でAIが説明文を作成</span><span style="color: var(--color-accent-400);">/</span>
+          <span>PINで確実に完了</span><span style="color: var(--color-accent-400);">/</span>
+          <span>36.5°から始まるご近所の信頼</span><span style="color: var(--color-accent-400);">/</span>
+          <span>月3回シェアすれば翌月無料</span><span style="color: var(--color-accent-400);">/</span>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </sc-if>
 
-<!-- ============ TRUST ============ -->
-<section id="trust" style="padding-top:0">
-  <div class="wrap">
-    <div class="trust-wrap rev">
-      <div class="sec-k">安心の仕組み</div>
-      <h2 class="sec-h">「信じてください」ではなく、<br>確認できる仕組みをつくりました</h2>
-      <div class="trusts">
-        <div class="tr"><div class="big">1人1アカウント</div><h4>電話番号認証</h4><p>LINE・Google・Appleなど、どの認証方法でも実在する1人につき1アカウントのみ作成可能です。</p></div>
-        <div class="tr"><div class="big">4桁</div><h4>PIN受渡認証</h4><p>受け取る側にのみ発行される番号で受取完了を確認し、受渡時のトラブルを未然に防ぎます。</p></div>
-        <div class="tr"><div class="big">24時間以内</div><h4>厳格な通報対応</h4><p>通報されたコンテンツは24時間以内に確認・対応し、通報受付時には即時確認通知をお届けします。</p></div>
-        <div class="tr"><div class="big">エリア単位</div><h4>位置情報は概略のみ</h4><p>投稿には市区町村・丁目単位のみ表示されます。詳細な場所は受渡が確定した相手にのみ共有されます。</p></div>
+  <section style="border-bottom: 2px solid var(--color-divider);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 6vw, 72px) 20px;">
+      <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">資源循環</p>
+      <h2 style="margin-top: 18px; max-width: 26em; font-size: clamp(26px, 4vw, 42px); line-height: 1.3; font-weight: 900;">捨てるはずだったモノが、ご近所の手で<span style="color: var(--color-neutral-600);">また使われ始めます</span></h2>
+      <p style="margin-top: 20px; max-width: 44em; font-size: clamp(16px, 2vw, 18px); line-height: 1.85; color: var(--color-neutral-800);">地域密着型のシェアには資源循環の効果があり、捨てるはずだったモノの廃棄処理を減らし、新しい使用価値を生み出します。</p>
+      <div style="margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 2px; background: var(--color-divider);">
+        <div style="background: var(--color-bg); padding: 26px 24px;">
+          <p style="font-family: var(--font-heading); font-size: 15px; font-weight: 800; color: var(--color-accent);">01</p>
+          <h3 style="margin-top: 14px; font-size: 19px; font-weight: 800;">地域の中で循環</h3>
+          <p style="margin-top: 10px; font-size: 15px; line-height: 1.8; color: var(--color-neutral-800);">配送も倉庫もありません。歩いて行ける距離のご近所に直接手渡しします。</p>
+        </div>
+        <div style="background: var(--color-bg); padding: 26px 24px;">
+          <p style="font-family: var(--font-heading); font-size: 15px; font-weight: 800; color: var(--color-accent);">02</p>
+          <h3 style="margin-top: 14px; font-size: 19px; font-weight: 800;">廃棄物が減ります</h3>
+          <p style="margin-top: 10px; font-size: 15px; line-height: 1.8; color: var(--color-neutral-800);">粗大ゴミとして出す前に、もう一度使われる機会をつくります。</p>
+        </div>
+        <div style="background: var(--color-bg); padding: 26px 24px;">
+          <p style="font-family: var(--font-heading); font-size: 15px; font-weight: 800; color: var(--color-accent);">03</p>
+          <h3 style="margin-top: 14px; font-size: 19px; font-weight: 800;">新しい使用価値</h3>
+          <p style="margin-top: 10px; font-size: 15px; line-height: 1.8; color: var(--color-neutral-800);">子どもが使わなくなった机、使っていないゴルフ手袋 — 誰かにとっては今すぐ必要なモノです。</p>
+        </div>
       </div>
-      <div class="temp">
-        <div class="deg">36.5°<small>みんなのスタート温度</small></div>
+    </div>
+  </section>
+
+  <section id="why" style="border-bottom: 2px solid var(--color-divider);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 6vw, 72px) 20px 0;">
+      <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">オンドンネが選ばれる理由</p>
+      <h2 style="margin-top: 18px; max-width: 24em; font-size: clamp(26px, 4vw, 42px); line-height: 1.3; font-weight: 900;">フリマアプリの譲渡掲示板ではなく、<span style="color: var(--color-neutral-600);">シェアだけの町です</span></h2>
+    </div>
+    <div style="max-width: 1240px; margin: 44px auto 0; padding: 0 20px clamp(48px, 6vw, 72px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 28px;">
+      <div>
+        <span style="font-family: var(--font-heading); font-size: 15px; font-weight: 800; color: var(--color-accent);">01</span>
+        <h3 style="margin-top: 14px; padding-top: 14px; border-top: 2px solid var(--color-divider); font-size: 19px; font-weight: 800; line-height: 1.4;">値段の入力欄がありません</h3>
+        <p style="margin-top: 12px; font-size: 15px; line-height: 1.8; color: var(--color-neutral-800);">すべての投稿が無料シェアです。値引き交渉も値切られることもないので、チャットが気楽になります。</p>
+      </div>
+      <div>
+        <span style="font-family: var(--font-heading); font-size: 15px; font-weight: 800; color: var(--color-accent);">02</span>
+        <h3 style="margin-top: 14px; padding-top: 14px; border-top: 2px solid var(--color-divider); font-size: 19px; font-weight: 800; line-height: 1.4;">AIが説明文を代わりに書きます</h3>
+        <p style="margin-top: 12px; font-size: 15px; line-height: 1.8; color: var(--color-neutral-800);">写真をアップするだけで、状態と受け渡し方法の説明を自然な文章で仕上げます。登録まで1分。</p>
+      </div>
+      <div>
+        <span style="font-family: var(--font-heading); font-size: 15px; font-weight: 800; color: var(--color-accent);">03</span>
+        <h3 style="margin-top: 14px; padding-top: 14px; border-top: 2px solid var(--color-divider); font-size: 19px; font-weight: 800; line-height: 1.4;">PINで確実に完了します</h3>
+        <p style="margin-top: 12px; font-size: 15px; line-height: 1.8; color: var(--color-neutral-800);">受け取る方にだけ発行される4桁の番号で完了を確認します。「受け取った/受け取っていない」の争いが起こりません。</p>
+      </div>
+      <div>
+        <span style="font-family: var(--font-heading); font-size: 15px; font-weight: 800; color: var(--color-accent);">04</span>
+        <h3 style="margin-top: 14px; padding-top: 14px; border-top: 2px solid var(--color-divider); font-size: 19px; font-weight: 800; line-height: 1.4;">シェアするほど無料になります</h3>
+        <p style="margin-top: 12px; font-size: 15px; line-height: 1.8; color: var(--color-neutral-800);">月に3回シェアすると、翌月の利用料が自動的に免除されます。課金を促すのではなく、シェアに報います。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="screens" style="border-bottom: 2px solid var(--color-divider); background: var(--color-surface);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 6vw, 72px) 20px;">
+      <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">アプリ画面</p>
+      <h2 style="margin-top: 18px; max-width: 22em; font-size: clamp(26px, 4vw, 42px); line-height: 1.3; font-weight: 900;">受け取る前に、まずご覧ください</h2>
+      <div style="margin-top: 44px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 32px;">
         <div>
-          <div class="tbar"><i></i></div>
-          <p><b style="color:#fff">マナー温度の仕組み</b> — 受渡完了や温かいタグラビューで上がり、通報が重なると下がります。温度が低下すると利用制限がかかりますが、安全なお取引を3回連続で行うと注意表示が解除されます。不当な評価は調査の上、除外対応いたします。</p>
+          <div style="border: 2px solid var(--color-text); background: #fff; overflow: hidden;">
+            <img src="assets/jp-home.jpg" alt="ホームフィード — 半径3kmのシェア投稿" style="width: 100%;">
+          </div>
+          <h3 style="margin-top: 18px; font-size: 18px; font-weight: 800;">ホーム — すべてシェア投稿</h3>
+          <p style="margin-top: 8px; font-size: 15px; line-height: 1.8; color: var(--color-neutral-800);">近隣範囲は人口密度に合わせて自動調整されます。</p>
+        </div>
+        <div>
+          <div style="border: 2px solid var(--color-text); background: #fff; overflow: hidden;">
+            <img src="assets/jp-post.jpg" alt="投稿詳細 — 受け渡し完了ステータスと写真" style="width: 100%;">
+          </div>
+          <h3 style="margin-top: 18px; font-size: 18px; font-weight: 800;">投稿 — 値段欄がありません</h3>
+          <p style="margin-top: 8px; font-size: 15px; line-height: 1.8; color: var(--color-neutral-800);">写真と状態、受け渡し方法だけ。ステータスは「シェア中」「シェア完了」のみです。</p>
+        </div>
+        <div>
+          <div style="border: 2px solid var(--color-text); background: #fff; overflow: hidden;">
+            <div style="box-sizing: border-box; display: flex; flex-direction: column; gap: 12px"><img src="assets/jp-profile.jpg" alt="マイページ — 今月のシェア回数とマナー温度" style="width: 100%"></div>
+          </div>
+          <h3 style="margin-top: 18px; font-size: 18px; font-weight: 800;">マイページ — シェア回数と温度</h3>
+          <p style="margin-top: 8px; font-size: 15px; line-height: 1.8; color: var(--color-neutral-800);">今月のシェア、マナー温度、累計シェア数が1画面にまとまっています。</p>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ============ MEMBERSHIP ============ -->
-<section id="free" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-k rev">メンバーシップ</div>
-    <h2 class="sec-h rev">ゆずり合えば、ずっと無料です</h2>
-    <p class="sec-d rev">課金を強制するのではなく、ゆずり合いの行動に報いる仕組みです。登録当日に料金が発生することはありません。</p>
-    <div class="mem">
-      <div class="m rev">
-        <span class="st">STEP 1</span>
-        <h3>初月無料トライアル</h3>
-        <p>登録後1ヶ月間はお支払い情報の入力なしで全機能を自由にお試しいただけます。期間終了の2日前にお知らせします。</p>
-        <div class="stamps"><span class="stamp">🎁</span><span class="stamp"></span><span class="stamp"></span></div>
+  <section id="how" style="border-bottom: 2px solid var(--color-divider);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 6vw, 72px) 20px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 32px; align-items: end;">
+        <div>
+          <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">使い方</p>
+          <h2 style="margin-top: 18px; font-size: clamp(26px, 4vw, 42px); line-height: 1.3; font-weight: 900;">登録から完了まで4ステップ、<span style="color: var(--color-neutral-600);">曖昧な部分をなくしました</span></h2>
+        </div>
+        <p style="font-size: clamp(16px, 2vw, 17px); line-height: 1.8; color: var(--color-neutral-800);">ご近所シェアで実際に問題が起きやすい部分 — 約束、すっぽかし、完了確認 — それぞれに仕組みを一つずつ組み込みました。</p>
       </div>
-      <div class="m hot rev">
-        <span class="mb">ほとんどの方がこの使い方</span>
-        <span class="st">STEP 2</span>
-        <h3>月3回のおゆずり = 翌月無料</h3>
-        <p>今月3回の受渡を完了すると、翌月の利用料が自動的に免除されます。毎月更新されるため、ゆずり合う限りずっと無料です。</p>
-        <div class="stamps"><span class="stamp on">🧡</span><span class="stamp on">🧡</span><span class="stamp on">🧡</span></div>
-      </div>
-      <div class="m rev">
-        <span class="st">STEP 3</span>
-        <h3>達成できない月は温もりチケット</h3>
-        <p>月3回に満たなかった場合でも、30日間の温もりチャージチケットで継続利用が可能です。残日数がある際に追加購入すると有効期限が延長されます。</p>
-        <div class="stamps"><span class="stamp on">🧡</span><span class="stamp on">🧡</span><span class="stamp">🎟️</span></div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- ============ COMPARE ============ -->
-<section style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-k rev">比較</div>
-    <h2 class="sec-h rev">フリマアプリのおゆずり機能と何が違うの？</h2>
-    <div class="cmp rev">
-      <table>
-        <thead><tr><th></th><th>一般的なフリマアプリ</th><th class="us">オンドンネ</th></tr></thead>
-        <tbody>
-          <tr><td class="rowh">価格・交渉</td><td>値下げ交渉、価格のやり取り</td><td class="us">価格入力欄自体が存在しない</td></tr>
-          <tr><td class="rowh">おゆずり投稿の露出</td><td>販売投稿の中に埋もれる</td><td class="us">ホームフィード全体がおゆずり専用</td></tr>
-          <tr><td class="rowh">受取確認</td><td>口頭・メッセージでの確認のみ</td><td class="us">4桁のPINコードで確実に認証</td></tr>
-          <tr><td class="rowh">受渡の約束</td><td>チャットに散らばる「今週末頃」</td><td class="us">日時・場所・取消がカード1枚に集約</td></tr>
-          <tr><td class="rowh">利用料金</td><td>無料（広告多数表示）</td><td class="us">月3回ゆずればずっと無料</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- ============ FAQ ============ -->
-<section id="faq" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-k rev">よくある質問</div>
-    <h2 class="sec-h rev">お問い合わせの前に、こちらをご確認ください</h2>
-    <div class="faqs rev">
-      <details class="faq" open>
-        <summary>相手が待ち合わせ場所に来なかった場合はどうすればいいですか？</summary>
-        <div class="a">受渡カードから<b>約束の時間から48時間以内</b>に「現れなかった」として通報できます。履歴が重なると相手のマナー温度が下がり、機能が制限されます。都合が悪くなった場合はカードのキャンセルボタンから3秒で取り消せますので、無断キャンセルではなく事前のキャンセル手続きをお願いしています。</div>
-      </details>
-      <details class="faq">
-        <summary>ゆずってはいけない品物はありますか？</summary>
-        <div class="a">開封済みの食品・医薬品・化粧品、チャイルドシートやヘルメットなど安全に直結する中古品、酒類・タバコ、ペットなどの生き物、転売目的の大量出品などは登録できません。<b>登録画面にて全リストと理由をご案内</b>しており、違反する投稿は理由と共にお知らせします。</div>
-      </details>
-      <details class="faq">
-        <summary>申込み後、返信がない場合はどれくらい待てばよいですか？</summary>
-        <div class="a">申込み画面に<b>出品者の返信期限</b>が表示されます。期限内に返信がない場合は自動的に次の申込み者へ順番が移るため、個別に催促する必要はありません。</div>
-      </details>
-      <details class="faq">
-        <summary>自宅の詳しい住所が他のユーザーに見えることはありますか？</summary>
-        <div class="a">いいえ。投稿には<b>市区町村・丁目単位まで</b>のみ表示されます。詳細な住所は受渡が確定した相手にのみ、受渡カード内でのみ共有されます。置き配・玄関前受渡を選択した場合も同様です。</div>
-      </details>
-      <details class="faq">
-        <summary>マナー温度はどのように上がったり下がったりしますか？</summary>
-        <div class="a">受渡完了やタグラビュー（「親切でした」「時間を守ってくれました」など）で上昇し、通報の累積で下降します。<b>一方的・不当な評価は確認のうえ反映から除外</b>され、安全なお取引が3回連続すれば注意表示はリセットされます。ご自身の温度履歴はプロフィールからご確認いただけます。</div>
-      </details>
-      <details class="faq">
-        <summary>利用料金はいつ、いくら請求されますか？</summary>
-        <div class="a"><b>会員登録時点では一切決済されません。</b>初月は無料トライアルとなっており、終了2日前にお知らせします。その後も月に3回ゆずれば翌月は自動で無料になるため、定期的にご利用いただいている方はずっと無料でご利用いただけます。目標に届かなかった月のみ、30日間の温もりチャージチケットをご自身で購入いただく仕組みです。</div>
-      </details>
-      <details class="faq">
-        <summary>不快なユーザーがいた場合はどうすればよいですか？</summary>
-        <div class="a">チャット画面右上からすぐに<b>通報・ブロック</b>が可能です。ブロックすると相手はあなたにメッセージを送信できず、投稿の閲覧も不可となります。<b>ブロックしたことが相手に通知されることはありません。</b>通報は受付後すぐに確認通知が届き、24時間以内に調査されます。</div>
-      </details>
-    </div>
-  </div>
-</section>
-
-<!-- ============ CTA ============ -->
-<section style="padding-top:0">
-  <div class="wrap">
-    <div class="cta rev">
-      <h2>使わなくなったモノが、<br>誰かにとって今必要なモノに。</h2>
-      <p>今日、お家に眠っているひとつのモノから始めてみませんか。あなたの街がもっと温かくなるきっかけになります。</p>
-      <div class="stores">
-  <a class="store" href="https://apps.apple.com/kr/app/온동네-나눔/id6791496536"><span class="os">▶</span><span>App Store<small>iPhoneでダウンロード</small></span></a>
-                <a class="store" href="https://play.google.com/store/apps/details?id=com.dancompany.ondongne&pcampaignid=web_share"><span class="os">▶</span><span>Google Play<small>Androidでダウンロード</small></span></a>
+      <div style="margin-top: 44px; display: flex; flex-direction: column;">
+        <div style="border-top: 2px solid var(--color-divider); padding: 26px 0; display: grid; grid-template-columns: 56px minmax(min(100%, 180px), 1fr) minmax(min(100%, 260px), 1.2fr); gap: 12px 28px; align-items: start;">
+          <span style="font-family: var(--font-heading); font-size: 36px; font-weight: 900; line-height: 1; color: var(--color-accent);">1</span>
+          <h3 style="font-size: clamp(19px, 2.4vw, 22px); font-weight: 800; line-height: 1.4;">写真を撮って登録</h3>
+          <div>
+            <p style="font-size: 16px; line-height: 1.8; color: var(--color-neutral-800);">写真は最大5枚、カテゴリーを選び、「AIで作成」ボタンを押すだけ。玄関先受け渡しの希望も一緒に表示できます。</p>
+            <p style="margin-top: 12px; padding-left: 14px; border-left: 2px solid var(--color-accent); font-size: 14px; line-height: 1.7; color: var(--color-neutral-700);">登録前にシェアルールと禁止品目を1画面でご案内します</p>
+          </div>
+        </div>
+        <div style="border-top: 2px solid var(--color-divider); padding: 26px 0; display: grid; grid-template-columns: 56px minmax(min(100%, 180px), 1fr) minmax(min(100%, 260px), 1.2fr); gap: 12px 28px; align-items: start;">
+          <span style="font-family: var(--font-heading); font-size: 36px; font-weight: 900; line-height: 1; color: var(--color-accent);">2</span>
+          <h3 style="font-size: clamp(19px, 2.4vw, 22px); font-weight: 800; line-height: 1.4;">チャットで応募</h3>
+          <div>
+            <p style="font-size: 16px; line-height: 1.8; color: var(--color-neutral-800);">複数のご近所さんが応募したら、投稿者が1人を選んで予約を確定します。ほかの応募者には締め切りの案内が自動で届きます。</p>
+            <p style="margin-top: 12px; padding-left: 14px; border-left: 2px solid var(--color-accent); font-size: 14px; line-height: 1.7; color: var(--color-neutral-700);">返信期限が表示されるので、「返事がない」と待ち続ける必要がありません</p>
+          </div>
+        </div>
+        <div style="border-top: 2px solid var(--color-divider); padding: 26px 0; display: grid; grid-template-columns: 56px minmax(min(100%, 180px), 1fr) minmax(min(100%, 260px), 1.2fr); gap: 12px 28px; align-items: start;">
+          <span style="font-family: var(--font-heading); font-size: 36px; font-weight: 900; line-height: 1; color: var(--color-accent);">3</span>
+          <h3 style="font-size: clamp(19px, 2.4vw, 22px); font-weight: 800; line-height: 1.4;">約束確定カード</h3>
+          <div>
+            <p style="font-size: 16px; line-height: 1.8; color: var(--color-neutral-800);">日時・場所・受け渡し方法がカードに固定され、受け取る方にPINが発行されます。カレンダー追加やキャンセルボタンも同じ画面に。</p>
+            <p style="margin-top: 12px; padding-left: 14px; border-left: 2px solid var(--color-accent); font-size: 14px; line-height: 1.7; color: var(--color-neutral-700);">都合が悪くなったら3秒でキャンセル — 無断キャンセルではなく、きちんと断る文化をつくります</p>
+          </div>
+        </div>
+        <div style="border-top: 2px solid var(--color-divider); border-bottom: 2px solid var(--color-divider); padding: 26px 0; display: grid; grid-template-columns: 56px minmax(min(100%, 180px), 1fr) minmax(min(100%, 260px), 1.2fr); gap: 12px 28px; align-items: start;">
+          <span style="font-family: var(--font-heading); font-size: 36px; font-weight: 900; line-height: 1; color: var(--color-accent);">4</span>
+          <h3 style="font-size: clamp(19px, 2.4vw, 22px); font-weight: 800; line-height: 1.4;">PIN確認 &amp; レビュー</h3>
+          <div>
+            <p style="font-size: 16px; line-height: 1.8; color: var(--color-neutral-800);">受け渡し後、PIN番号でシェア完了。「時間を守る」などのタグレビューでマナー温度が上がり、スタンプが押されます。</p>
+            <p style="margin-top: 12px; padding-left: 14px; border-left: 2px solid var(--color-accent); font-size: 14px; line-height: 1.7; color: var(--color-neutral-700);">タグをタップするだけ — レビューは10秒で完了します</p>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<footer>
-  <div class="wrap">
-  <div><b>オンドンネ</b><br>売買のない温かいご近所ゆずり合い · <a class="한국어" href="https://dancompany.co.kr/develop/ondongne/index.html">한국어 · <a class="English" href="https://dancompany.co.kr/develop/ondongne/ondongne_en.html">English · <a class="日本語" href="https://dancompany.co.kr/develop/ondongne/ondongne_jp.html">日本語<br>  
-  <div><b>運営元</b><br><a href="/" style="text-decoration:underline">DANCOMPANY</a> — 企画から開発・運営まで一貫して制作しています<br>© 2026 DANCOMPANY</div>
-  </div>
-</footer>
+  <section id="trust" style="border-bottom: 2px solid var(--color-divider);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 6vw, 72px) 20px;">
+      <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">安心の仕組み</p>
+      <h2 style="margin-top: 18px; max-width: 26em; font-size: clamp(26px, 4vw, 42px); line-height: 1.3; font-weight: 900;">「信じてください」ではなく、<span style="color: var(--color-neutral-600);">確認できる仕組みにしました</span></h2>
 
-    <footer>
-  <div class="wrap">
-<div><b>オンドンネ</b><br>売買のない温かいご近所ゆずり合い· <a class="한국어" href="https://dancompany.co.kr/develop/ondongne/index.html">한국어 · <a class="English" href="https://dancompany.co.kr/develop/ondongne/ondongne_en.html">English · <a class="日本語" href="https://dancompany.co.kr/develop/ondongne/ondongne_jp.html">日本語<br>パートナーシップ＆プレス: ondongne.service@ondongne.app</div>
+      <div style="margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 2px; background: var(--color-divider);">
+        <div style="background: var(--color-surface); padding: 26px;">
+          <span class="tag tag-outline" style="font-size: 11px;">1人1アカウント</span>
+          <h4 style="margin-top: 16px; font-size: 17px; font-weight: 800;">携帯電話番号認証</h4>
+          <p style="margin-top: 10px; font-size: 14px; line-height: 1.8; color: var(--color-neutral-800);">どの方法で登録しても、実在する1人につき1アカウントしか作れません。</p>
+        </div>
+        <div style="background: var(--color-surface); padding: 26px;">
+          <span class="tag tag-outline" style="font-size: 11px;">4桁</span>
+          <h4 style="margin-top: 16px; font-size: 17px; font-weight: 800;">PIN完了認証</h4>
+          <p style="margin-top: 10px; font-size: 14px; line-height: 1.8; color: var(--color-neutral-800);">受け取る方にだけ発行される番号で完了を確認し、受け渡しトラブルそのものを防ぎます。</p>
+        </div>
+        <div style="background: var(--color-surface); padding: 26px;">
+          <span class="tag tag-outline" style="font-size: 11px;">24時間</span>
+          <h4 style="margin-top: 16px; font-size: 17px; font-weight: 800;">迅速な通報対応</h4>
+          <p style="margin-top: 10px; font-size: 14px; line-height: 1.8; color: var(--color-neutral-800);">通報されたコンテンツは24時間以内に確認・対応し、受付と同時に確認通知をお送りします。</p>
+        </div>
+        <div style="background: var(--color-surface); padding: 26px;">
+          <span class="tag tag-outline" style="font-size: 11px;">町丁目単位</span>
+          <h4 style="margin-top: 16px; font-size: 17px; font-weight: 800;">位置情報はおおまかに公開</h4>
+          <p style="margin-top: 10px; font-size: 14px; line-height: 1.8; color: var(--color-neutral-800);">投稿には地域名だけが表示されます。詳しい場所は約束が確定した相手にだけ共有されます。</p>
+        </div>
+      </div>
 
-    <div><b>運営元</b><br><a href="http://www.dancompany.co.kr" style="text-decoration:underline">DANCOMPANY</a> — 企画から開発・運営まで一貫して制作しています<br>© 2026 DANCOMPANY</div>
-  </div>
-</footer>
+      <div style="margin-top: 36px; background: var(--color-accent); color: #fff; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 28px; padding: clamp(28px, 4vw, 44px) clamp(24px, 3vw, 40px);">
+        <div>
+          <p style="font-family: var(--font-heading); font-size: clamp(52px, 8vw, 84px); font-weight: 900; line-height: 0.9; letter-spacing: -0.04em;">36.5°</p>
+          <p style="margin-top: 12px; font-size: 15px; font-weight: 600; color: color-mix(in srgb, #fff 82%, transparent);">すべてのご近所さんの初期温度</p>
+        </div>
+        <p style="align-self: center; font-size: clamp(16px, 2vw, 17px); line-height: 1.9;">
+          <strong style="font-weight: 800;">マナー温度はこう計算されます</strong> — シェア完了と温かいタグレビューで上がり、通報が積み重なると下がります。下がると参加が制限されることがあり、安全なシェアを3回連続で行うと注意表示がリセットされます。不当な評価は確認のうえ反映から除外します。
+        </p>
+      </div>
+    </div>
+  </section>
 
-<script>
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
-document.querySelectorAll('.rev').forEach(el=>io.observe(el));
+  <section id="free" style="border-bottom: 2px solid var(--color-divider);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 6vw, 72px) 20px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 32px; align-items: end;">
+        <div>
+          <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">メンバーシップ</p>
+          <h2 style="margin-top: 18px; font-size: clamp(26px, 4vw, 42px); line-height: 1.3; font-weight: 900;">シェアすれば、ずっと無料です</h2>
+        </div>
+        <p style="font-size: clamp(16px, 2vw, 17px); line-height: 1.8; color: var(--color-neutral-800);">課金を促す仕組みではなく、シェアという行動に報いる仕組みです。今日、何も請求されることはありません。</p>
+      </div>
+
+      <div style="margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 20px;">
+        <div style="border: 2px solid var(--color-divider); background: var(--color-neutral-100); padding: 28px 24px; display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-neutral-600);">STEP 1</span>
+          <h3 style="font-size: 20px; font-weight: 800; line-height: 1.4;">最初の1か月は無料体験</h3>
+          <p style="font-size: 15px; line-height: 1.8; color: var(--color-neutral-800);">登録後1か月間、決済情報の入力なしですべての機能を自由にお試しいただけます。体験終了2日前に事前にお知らせします。</p>
+        </div>
+        <div style="border: 2px solid var(--color-accent); background: var(--color-accent-100); padding: 28px 24px; display: flex; flex-direction: column; gap: 12px;">
+          <span style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">STEP 2 <span class="tag tag-accent" style="font-size: 10px; letter-spacing: 0.04em;">多くの方がこの使い方</span></span>
+          <h3 style="font-size: 20px; font-weight: 800; line-height: 1.4;">月3回シェア = 翌月無料</h3>
+          <p style="font-size: 15px; line-height: 1.8; color: var(--color-neutral-800);">今月3回のシェアを完了すると、翌月の利用料が自動で免除されます。毎月更新されるので、シェアし続ける限りずっと無料です。</p>
+        </div>
+        <div style="border: 2px solid var(--color-divider); background: var(--color-neutral-100); padding: 28px 24px; display: flex; flex-direction: column; gap: 12px;">
+          <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-neutral-600);">STEP 3</span>
+          <h3 style="font-size: 20px; font-weight: 800; line-height: 1.4;">満たせなかった月は温もりチケット</h3>
+          <p style="font-size: 15px; line-height: 1.8; color: var(--color-neutral-800);">3回に届かなかった月は、30日間の温もりチケットで継続利用できます。残り期間があるうちに購入すると、期間が繰り越されて加算されます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <sc-if value="{{ showComparison }}" hint-placeholder-val="{{ true }}">
+    <section style="border-bottom: 2px solid var(--color-divider);">
+      <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 6vw, 72px) 20px;">
+        <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">比較</p>
+        <h2 style="margin-top: 18px; font-size: clamp(26px, 4vw, 42px); line-height: 1.3; font-weight: 900;">フリマアプリのシェアと何が違うのか</h2>
+        <div style="margin-top: 36px; overflow-x: auto;">
+          <table class="table" style="width: 100%; min-width: 640px;">
+            <thead>
+              <tr>
+                <th style="width: 22%;"></th>
+                <th style="font-weight: 700;">一般的なフリマアプリ</th>
+                <th style="font-weight: 700; color: var(--color-accent-700);">オンドンネ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="font-weight: 700;">価格・交渉</td><td style="color: var(--color-neutral-700);">値引き文化、価格交渉</td><td style="font-weight: 600;">値段の入力欄が存在しない</td></tr>
+              <tr><td style="font-weight: 700;">シェア投稿の露出</td><td style="color: var(--color-neutral-700);">販売投稿の中に埋もれる</td><td style="font-weight: 600;">ホームフィード全体がシェア専用</td></tr>
+              <tr><td style="font-weight: 700;">完了確認</td><td style="color: var(--color-neutral-700);">口頭だけの「受け取りました」</td><td style="font-weight: 600;">PIN4桁で番号確認</td></tr>
+              <tr><td style="font-weight: 700;">約束</td><td style="color: var(--color-neutral-700);">チャットに散らばった「土曜あたり」</td><td style="font-weight: 600;">日時・場所・キャンセルが1枚のカードに固定</td></tr>
+              <tr><td style="font-weight: 700;">利用料</td><td style="color: var(--color-neutral-700);">無料(広告表示あり)</td><td style="font-weight: 600;">月3回シェアすればずっと無料</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <section style="border-bottom: 2px solid var(--color-divider); background: var(--color-surface);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 6vw, 72px) 20px;">
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: baseline; justify-content: space-between;">
+        <div>
+          <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">ご近所の声</p>
+          <h2 style="margin-top: 18px; font-size: clamp(26px, 4vw, 42px); line-height: 1.3; font-weight: 900;">シェアを終えたご近所さんの声</h2>
+        </div>
+        <span class="tag tag-outline" style="font-size: 11px;">実際の声を入れる予定</span>
+      </div>
+      <div style="margin-top: 36px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 20px;">
+        <div style="border: 2px dashed var(--color-neutral-400); background: var(--color-bg); padding: 26px 24px; min-height: 190px; display: flex; flex-direction: column; justify-content: space-between; gap: 20px;">
+          <p style="font-size: 16px; line-height: 1.8; color: var(--color-neutral-600);">粗大ゴミ処理券を買うところでしたが、ご近所さんが「ちょうど必要でした」と喜んで持って行ってくれました。私は処理費用が浮いて、相手も欲しかったものが手に入って、双方うれしい結果に。</p>
+          <p style="font-size: 13px; font-weight: 700; color: var(--color-neutral-500);">トゥトゥ · 다산1동在住 · シェア3回</p>
+        </div>
+        <div style="border: 2px dashed var(--color-neutral-400); background: var(--color-bg); padding: 26px 24px; min-height: 190px; display: flex; flex-direction: column; justify-content: space-between; gap: 20px;">
+          <p style="font-size: 16px; line-height: 1.8; color: var(--color-neutral-600);">たまる一方だった服をこの機会に整理しました。<br>きれいだけどスタイルに合わなかったり捨てるには惜しい服をシェアしたら、あっという間になくなりました。</p>
+          <p style="font-size: 13px; font-weight: 700; color: var(--color-neutral-500);">パンスニ · 충현동在住 · シェア10回</p>
+        </div>
+        <div style="border: 2px dashed var(--color-neutral-400); background: var(--color-bg); padding: 26px 24px; min-height: 190px; display: flex; flex-direction: column; justify-content: space-between; gap: 20px;">
+          <p style="font-size: 16px; line-height: 1.8; color: var(--color-neutral-600);">形だけのシェアで終わらず、ちゃんとしたシェアになる仕組みがPIN番号だと思います。番号を伝えてすぐ承認、シェアスタンプもすぐもらえました。</p>
+          <p style="font-size: 13px; font-weight: 700; color: var(--color-neutral-500);">クマチクマチ · 다산1동在住 · シェア2回</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="border-bottom: 2px solid var(--color-divider);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 6vw, 72px) 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 32px; align-items: start;">
+      <div>
+        <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">対応地域</p>
+        <h2 style="margin-top: 18px; font-size: clamp(26px, 4vw, 42px); line-height: 1.3; font-weight: 900;">韓国と日本、<span style="color: var(--color-neutral-600);">同じ仕組みでシェアします</span></h2>
+      </div>
+      <div style="display: grid; gap: 2px; background: var(--color-divider);">
+        <div style="background: var(--color-bg); padding: 22px 0; display: flex; flex-wrap: wrap; gap: 12px; align-items: baseline;">
+          <h3 style="font-size: 19px; font-weight: 800; min-width: 120px;">韓国</h3>
+          <p style="flex: 1; min-width: 200px; font-size: 15px; line-height: 1.8; color: var(--color-neutral-800);">ソウル・首都圏を中心に、町丁目単位でシェアが運用されています。近隣範囲は人口密度に合わせて自動調整されます。</p>
+        </div>
+        <div style="background: var(--color-bg); padding: 22px 0; display: flex; flex-wrap: wrap; gap: 12px; align-items: baseline;">
+          <h3 style="font-size: 19px; font-weight: 800; min-width: 120px;">日本</h3>
+          <p style="flex: 1; min-width: 200px; font-size: 15px; line-height: 1.8; color: var(--color-neutral-800);">日本語版アプリとランディングページを合わせて運用しています。シェアのルールとPIN完了方式は同じです。</p>
+        </div>
+        <div style="background: var(--color-bg); padding: 22px 0; display: flex; flex-wrap: wrap; gap: 12px; align-items: baseline;">
+          <h3 style="font-size: 19px; font-weight: 800; min-width: 120px;">言語</h3>
+          <p style="flex: 1; min-width: 200px; font-size: 15px; line-height: 1.8; color: var(--color-neutral-800);">한국어 · English · 日本語 — 下部のフッターから切り替えられます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" style="border-bottom: 2px solid var(--color-divider);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(48px, 6vw, 72px) 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 40px; align-items: start;">
+      <div>
+        <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--color-accent-700);">よくあるご質問</p>
+        <h2 style="margin-top: 18px; font-size: clamp(24px, 3.2vw, 36px); line-height: 1.35; font-weight: 900;">お問い合わせの前に、こちらをご確認ください</h2>
+      </div>
+      <div>
+        <sc-for list="{{ faqs }}" as="item" hint-placeholder-count="7">
+          <details style="border-top: 2px solid var(--color-divider);">
+            <summary style="padding: 20px 0; display: flex; gap: 16px; align-items: baseline; font-size: 16px; font-weight: 700; line-height: 1.6; min-height: 56px;">
+              <span style="flex: 1;">{{ item.q }}</span>
+              <span class="om-plus" style="flex: none; width: 16px; height: 16px; position: relative; transition: transform 0.2s ease;">
+                <span style="position: absolute; inset: 7px 0 auto; height: 2px; background: var(--color-accent); display: block;"></span>
+                <span style="position: absolute; inset: 0 7px auto; width: 2px; height: 16px; background: var(--color-accent); display: block;"></span>
+              </span>
+            </summary>
+            <p style="padding: 0 24px 22px 0; font-size: 15px; line-height: 1.9; color: var(--color-neutral-800);">{{ item.a }}</p>
+          </details>
+        </sc-for>
+        <div style="border-top: 2px solid var(--color-divider);"></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background: var(--color-accent); color: #fff;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(56px, 8vw, 88px) 20px;">
+      <h2 style="max-width: 26em; font-size: clamp(28px, 5vw, 56px); line-height: 1.25; font-weight: 900;">使わないモノが、誰かにとって必要なモノになる。</h2>
+      <p style="margin-top: 22px; max-width: 34em; font-size: clamp(17px, 2vw, 19px); line-height: 1.75; color: color-mix(in srgb, #fff 88%, transparent);">今日、家に眠っているモノひとつから始めてみませんか。それが、あなたの町を温かくする理由になります。</p>
+      <div style="margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px;">
+        <a href="https://apps.apple.com/jp/app/온동네-나눔/id6791496536" style="background: #fff; color: var(--color-text); padding: 15px 26px; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; line-height: 1.2; font-weight: 700; min-height: 56px;">
+          <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: var(--color-neutral-700);">APP STORE</span>
+          <span style="font-size: 17px;">iPhoneで入手</span>
+        </a>
+        <a href="https://play.google.com/store/apps/details?id=com.dancompany.ondongne&amp;pcampaignid=web_share" style="border: 2px solid #fff; color: #fff; padding: 13px 26px; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; line-height: 1.2; font-weight: 700; min-height: 56px;">
+          <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: color-mix(in srgb, #fff 82%, transparent);">GOOGLE PLAY</span>
+          <span style="font-size: 17px;">Androidで入手</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background: var(--color-text); color: var(--color-neutral-300);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: clamp(40px, 5vw, 56px) 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 28px;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <img src="assets/logo-sm.png" alt="オンドンネ" style="width: 32px; height: 32px;">
+          <p style="font-family: var(--font-heading); font-size: 20px; font-weight: 900; color: #fff;">オンドンネ</p>
+        </div>
+        <p style="margin-top: 12px; font-size: 14px; line-height: 1.7;">値段のない、温かいご近所シェア</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px; font-size: 14px;">
+        <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: var(--color-neutral-500);">LANGUAGE</span>
+        <a href="index.html" style="color: var(--color-neutral-200);">한국어</a>
+        <a href="ondongne_en.html" style="color: var(--color-neutral-200);">English</a>
+        <a href="ondongne_jp.html" style="color: var(--color-neutral-200);">日本語</a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px; font-size: 14px;">
+        <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: var(--color-neutral-500);">お問い合わせ</span>
+        <a href="mailto:ondongne_service@gmail.com" style="color: var(--color-neutral-200);">提携・広報のお問い合わせ ondongne_service@gmail.com</a>
+        <p style="margin-top: 8px; line-height: 1.7;"><a href="https://dancompany.co.kr/" style="color: #fff; font-weight: 700;">DANCOMPANY</a> — 企画から開発・運営まで自社で手がけています</p>
+        <p style="font-size: 13px; color: var(--color-neutral-500);">© 2026 DANCOMPANY</p>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showTicker&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;섹션&quot;},&quot;showComparison&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;섹션&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      showTicker: this.props.showTicker ?? true,
+      showComparison: this.props.showComparison ?? true,
+      faqs: [
+        { q: "相手が約束の場所に来なかったらどうすればいいですか?", a: "約束カードから、約束時刻の後48時間以内に「来なかった」として通報できます。記録が積み重なると、その相手のマナー温度が下がり、参加が制限されます。都合が悪くなったときはカードのキャンセルボタンで3秒でキャンセルできるので、無断キャンセルではなくキャンセルをお願いします。" },
+        { q: "シェアできないモノはありますか?", a: "開封済みの食品・医薬品・化粧品、チャイルドシート・ヘルメットなど安全に関わる中古品、酒類・タバコ、ペット、転売目的の大量出品は登録できません。登録画面で全リストと理由を改めてご案内し、規約に反する投稿は理由とともにお知らせします。" },
+        { q: "応募したのに返事がない場合、どのくらい待てばいいですか?", a: "応募画面に投稿者の返信期限が表示されます。期限内に返信がない場合、自動的に次の応募者へ順番が回るので、催促の必要はありません。" },
+        { q: "自宅の住所が他の人に見られますか?", a: "いいえ。投稿には地域名(町丁目単位)だけが表示されます。詳しい場所は約束が確定した相手にだけ、約束カード内で共有されます。玄関先受け渡しを選んだ場合も同様です。" },
+        { q: "マナー温度はどう上下しますか?", a: "シェア完了と「親切」「時間を守る」などのタグレビューで上がり、通報が積み重なると下がります。一方的あるいは不当な評価は確認のうえ反映から除外し、安全なシェアを3回連続で行うと注意表示がリセットされます。自分の温度の変動履歴はプロフィールから確認できます。" },
+        { q: "利用料はいつ、いくら請求されますか?", a: "登録時点では何も請求されません。最初の1か月は無料体験で、終了2日前に通知が届きます。その後も月3回シェアすれば翌月は自動的に無料になるので、継続的にシェアする方はずっと無料でご利用いただけます。3回に届かなかった月だけ、30日間の温もりチケットを購入します。" },
+        { q: "不快なご近所さんがいたらどうすればいいですか?", a: "チャット画面右上からすぐに通報・ブロックできます。ブロックすると相手はメッセージを送れず、あなたのシェア投稿も見られなくなり、ブロックしたことは相手に通知されません。通報は受付と同時に確認通知が届き、24時間以内に確認されます。" }
+      ]
+    };
+  }
+}
 </script>
 </body>
 </html>
-
-```
