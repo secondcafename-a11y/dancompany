@@ -1108,20 +1108,35 @@
                                     <p className={`text-xs sm:text-sm leading-relaxed ${darkMode ? 'text-slate-300' : 'text-slate-655'}`}>
                                         기획과 분석, 그리고 최고 성능의 IT 아키텍처 연계, 전 세계 무대로의 입점 유통이 단 하나의 채널로 해결되는 혁신을 제공합니다. 아래 양식을 입력해 주시면 DANCOMPANY의 부문 전문가가 직접 연락드리겠습니다.
                                     </p>
-                                   <a
-  className="mt-6 flex items-center justify-between gap-4 p-4 rounded-2xl border border-indigo-500/20 bg-indigo-500/5 hover:bg-indigo-500/10 transition-all"
-  href="https://dancompany.co.kr/develop/ondongne/"
->
-  <span className="flex flex-col text-left">
-    <span className="text-[10px] font-black text-indigo-400 uppercase tracking-widest">
-      PORTFOLIO(BUILD)
-    </span>
-    <span className="text-xs sm:text-sm font-extrabold mt-0.5">
-      APP 페이지로 이동
-    </span>
+  <div className="mt-6 p-4 rounded-2xl border border-indigo-500/20 bg-indigo-500/5">
+  <span className="block text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-2 text-left">
+    PORTFOLIO(BUILD)
   </span>
-  <span className="text-indigo-400 text-lg" aria-hidden="true">&rarr;</span>
-</a>
+
+  <div className="flex flex-col gap-2">
+    <a
+      href="https://dancompany.co.kr/develop/ondongne/"
+      className="flex items-center justify-between py-1.5 px-2 rounded-xl hover:bg-indigo-500/10 transition-all group"
+    >
+      <span className="text-xs sm:text-sm font-extrabold text-slate-800">
+        APP 페이지로 이동
+      </span>
+      <span className="text-indigo-400 text-lg transition-transform group-hover:translate-x-1" aria-hidden="true">&rarr;</span>
+    </a>
+
+    <div className="border-t border-indigo-500/10"></div>
+
+    <a
+      href="https://dancompany.co.kr/develop/dropshare"
+      className="flex items-center justify-between py-1.5 px-2 rounded-xl hover:bg-indigo-500/10 transition-all group"
+    >
+      <span className="text-xs sm:text-sm font-extrabold text-slate-800">
+        WEB 페이지로 이동
+      </span>
+      <span className="text-indigo-400 text-lg transition-transform group-hover:translate-x-1" aria-hidden="true">&rarr;</span>
+    </a>
+  </div>
+</div>
                                     </div>
                                 <div className="space-y-4">
                                     <div className={`p-4 rounded-2xl border flex items-center gap-4 ${darkMode ? 'bg-[#0f111d] border-white/5' : 'bg-white border-slate-200'}`}>
