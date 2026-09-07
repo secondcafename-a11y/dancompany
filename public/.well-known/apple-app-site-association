@@ -1,0 +1,12 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["RXF9RZ6C3W.com.dancompany.forestfriends"],
+        "components": [
+          { "/": "/i/*", "comment": "포레스트 프렌즈 초대 링크" }
+        ]
+      }
+    }
+  ]
+}
