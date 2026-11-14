@@ -6,8 +6,17 @@ src=open('index.html').read()
 s=src
 # --- structural changes ---
 s=s.replace('<html lang="ko">','<html lang="en">',1)
-a=s.index('<!-- ===== Intro film'); b=s.index('</script>',a)+len('</script>')
-s=s[:a]+'<!-- Intro film is Korean-only; omitted on the English page -->'+s[b:]
+# Intro film: English cut (media/intro-en.*) with English controls
+for ko,en in [('<!-- ===== Intro film (30s) — 세션당 1회 재생, 건너뛰기 가능 ===== -->','<!-- ===== Intro film (30s) — plays once per session, skippable ===== -->'),
+              ('aria-label="단컴퍼니 소개 영상"','aria-label="DANCOMPANY intro film"'),
+              ("'🔊 소리 켜기':'🔇 소리 끄기'","'🔊 Sound on':'🔇 Sound off'"),
+              ('🔊 소리 켜기</button>','🔊 Sound on</button>'),
+              ('건너뛰기 →</button>','Skip →</button>'),
+              ('/media/intro-ko-poster.jpg','/media/intro-en-poster.jpg'),
+              ('/media/intro-ko.mp4','/media/intro-en.mp4'),
+              ('/media/intro-ko.webm','/media/intro-en.webm')]:
+    assert ko in s, ko
+    s=s.replace(ko,en)
 s=s.replace('<link rel="canonical" href="https://dancompany.co.kr/">','<link rel="canonical" href="https://dancompany.co.kr/en">')
 s=s.replace('<meta property="og:url" content="https://dancompany.co.kr/">','<meta property="og:url" content="https://dancompany.co.kr/en">\n<meta property="og:locale" content="en_US">')
 s=s.replace('<a href="index.html" hreflang="ko" lang="ko" aria-current="true">KO</a><a href="en.html" hreflang="en" lang="en" data-cta="lang-en">EN</a>',

@@ -12,7 +12,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:title" content="DANCOMPANY | Integrated Business Solutions Partner">
 <meta property="og:description" content="From management to technology, we take your business further. Consulting · IT development · Global e-commerce · Publishing.">
-<meta property="og:image" content="https://dancompany.co.kr/media/intro-ko-poster.jpg">
+<meta property="og:image" content="https://dancompany.co.kr/media/intro-en-poster.jpg?v=4">
 <meta name="theme-color" content="#F7F5F3">
 <link rel="icon" href="media/brand/icon.svg" type="image/svg+xml">
 <link rel="icon" href="media/brand/favicon-32.png" type="image/png" sizes="32x32">
@@ -396,7 +396,38 @@ textarea.input{height:auto;min-height:140px;padding:14px var(--s-4);resize:verti
 </head>
 <body>
 
-<!-- Intro film is Korean-only; omitted on the English page -->
+<!-- ===== Intro film (30s) — plays once per session, skippable ===== -->
+<div id="dc-intro" aria-label="DANCOMPANY intro film">
+  <video id="dc-intro-video" poster="/media/intro-en-poster.jpg?v=4" muted playsinline autoplay preload="auto">
+    <source src="/media/intro-en.mp4?v=4" type="video/mp4">
+    <source id="dc-intro-last" src="/media/intro-en.webm?v=4" type="video/webm">
+  </video>
+  <div class="dc-ctrl">
+    <button type="button" class="btn btn-sm btn-soft" id="dc-intro-sound">🔊 Sound on</button>
+    <button type="button" class="btn btn-sm" style="background:#fff;color:#0D0D0D" id="dc-intro-skip">Skip →</button>
+  </div>
+  <div class="dc-bar" id="dc-intro-bar"></div>
+</div>
+<script>
+(function(){
+  var box=document.getElementById('dc-intro'),v=document.getElementById('dc-intro-video');
+  var seen=false;try{seen=sessionStorage.getItem('dcIntroSeen')==='1'}catch(e){}
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var forced=/[?&]intro=1/.test(location.search);
+  function close(){if(box.classList.contains('dc-hide'))return;box.classList.add('dc-hide');document.documentElement.style.overflow='';try{v.pause()}catch(e){}try{sessionStorage.setItem('dcIntroSeen','1')}catch(e){}setTimeout(function(){box.parentNode&&box.parentNode.removeChild(box)},900)}
+  if((seen||reduce)&&!forced){box.parentNode.removeChild(box);return}
+  document.documentElement.style.overflow='hidden';
+  var p=v.play();if(p&&p.catch)p.catch(function(){});
+  v.addEventListener('ended',close);v.addEventListener('error',close);var ls=document.getElementById('dc-intro-last');ls&&ls.addEventListener('error',close);
+  v.addEventListener('timeupdate',function(){if(v.duration)document.getElementById('dc-intro-bar').style.width=(v.currentTime/v.duration*100)+'%'});
+  document.getElementById('dc-intro-skip').addEventListener('click',close);
+  var sb=document.getElementById('dc-intro-sound');
+  sb.addEventListener('click',function(){v.muted=!v.muted;if(!v.muted){v.volume=1;v.play()}sb.textContent=v.muted?'🔊 Sound on':'🔇 Sound off'});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+  setTimeout(close,45000);
+  window.va('event',{name:'Intro Shown'});
+})();
+</script>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
