@@ -185,3 +185,5 @@ dancompany.co.kr의 화면 규칙. 새 섹션·페이지는 이 문서의 값만
 
 - 2026-11-14: 4대 축 카드는 가로 스크롤 대신 한 화면 그리드(`grid4`: 데스크톱 4열 / 모바일 2열). `Status box`의 본문은 한 줄 고정(`white-space: nowrap`, `clamp(13px, 1.3vw, 17px)`), 이미지 영역 전체 폭 사용.
 - 출시 앱·웹 개수 같은 수량 표기는 쓰지 않는다.
+- 2026-11-14: 브랜드 로고 적용 — `media/brand/`(출처: dancompany-logo-A2). 헤더 가운데·푸터 사업자 카드에 `logo-horizontal.svg`, 파비콘 `icon.svg`(+ `favicon-32.png`, `apple-touch-icon.png`). 로고 색(#1E40AF·#2563EB·#0891B2·#059669)은 로고 안에서만 쓰고 UI 색으로 쓰지 않는다.
+- 2026-11-14: 영문 페이지 `en.html`(`/en`). 헤더 오른쪽 KO/EN 전환(`.lang`, `--soft` 알약 + 활성 흰 알약). `scripts/make_en.py`로 `index.html`에서 생성한다. 영문 페이지에는 한국어 인트로 영상을 넣지 않는다.
