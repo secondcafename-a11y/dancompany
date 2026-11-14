@@ -62,7 +62,8 @@ a{color:inherit;text-decoration:none}
 button,input,textarea{font:inherit;color:inherit;letter-spacing:inherit}
 h1,h2,h3,h4,p,ul,ol{margin:0}
 ul,ol{padding:0;list-style:none}
-h1,h2,h3{font-weight:700;text-wrap:balance}
+h1,h2,h3{font-weight:700;text-wrap:balance;overflow-wrap:anywhere}
+.sec-head>div{min-width:0}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
 .container{max-width:var(--container);margin:0 auto;padding:0 var(--gutter)}
 .display{font-size:var(--fs-display);font-weight:700;line-height:1.08;letter-spacing:-0.055em}
@@ -129,7 +130,7 @@ h1,h2,h3{font-weight:700;text-wrap:balance}
 @keyframes float{from{translate:0 -2px}to{translate:0 3px}}
 .tile.d-only{display:none}
 @media (min-width:900px){.tile.d-only{display:block}}
-.hero-inner{position:relative;z-index:2;text-align:center;max-width:1080px;padding:0 var(--gutter)}
+.hero-inner{position:relative;z-index:2;text-align:center;width:100%;min-width:0;max-width:1080px;padding:0 var(--gutter)}
 .hero h1{font-size:clamp(38px,5.4vw,76px)}
 .inline-shots{display:inline-flex;vertical-align:middle;margin:0 .1em;transform:translateY(-.06em)}
 .inline-shots span{width:.78em;height:.78em;border-radius:12px;overflow:hidden;border:2px solid var(--cream);box-shadow:var(--shadow-sm);background:var(--tile)}
@@ -140,9 +141,9 @@ h1,h2,h3{font-weight:700;text-wrap:balance}
 .hero-sub{margin:var(--s-6) auto 0;max-width:36em;font-size:clamp(16px,1.4vw,18px);color:var(--text-2)}
 .hero-sub+.hero-sub{margin-top:var(--s-3);font-size:15px;color:var(--text-3)}
 .ask{display:flex;align-items:center;gap:6px;max-width:640px;margin:var(--s-8) auto 0;padding:6px;border-radius:var(--r-pill);background:rgba(13,13,13,.04);border:1px solid var(--line)}
-.ask label{flex:1;display:flex;align-items:center;gap:var(--s-3);height:60px;padding:0 var(--s-5);border-radius:var(--r-pill);background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-lg);cursor:text;min-width:0}
+.ask label{flex:1;min-width:0;display:flex;align-items:center;gap:var(--s-3);height:60px;padding:0 var(--s-5);border-radius:var(--r-pill);background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-lg);cursor:text;min-width:0}
 .ask label svg{width:22px;height:22px;flex:none;color:var(--text-3)}
-.ask input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:17px;font-weight:500}
+.ask input{flex:1;width:0;min-width:0;border:0;text-overflow:ellipsis;outline:0;background:transparent;font-size:17px;font-weight:500}
 .ask input::placeholder{color:var(--text-3)}
 .ask button{flex:none;width:56px;height:56px;border-radius:50%;border:1px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer;transition:background-color .15s var(--ease)}
 .ask button:hover{background:var(--tile)}
