@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>오마카세 일본어 다운로드</title>
+<meta name="description" content="상황별 여행 일본어 앱, 오마카세 일본어를 다운로드하세요.">
+<meta property="og:title" content="오마카세 일본어 – 일본여행 회화">
+<meta property="og:description" content="듣고 바로 대답하는 상황별 여행 일본어. 지금 다운로드하세요.">
+<script>
+  (function () {
+    var IOS = "https://apps.apple.com/kr/app/id6834276951";
+    var ANDROID = "https://play.google.com/store/apps/details?id=com.dancompany.omakase";
+    var ua = navigator.userAgent || "";
+    var isAndroid = /android/i.test(ua);
+    // iPadOS 13+ 는 Mac으로 표시되므로 터치 지원 여부로 구분
+    var isIOS = /iPhone|iPad|iPod/i.test(ua) ||
+      (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
+    if (isAndroid) location.replace(ANDROID);
+    else if (isIOS) location.replace(IOS);
+  })();
+</script>
+<style>
+  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+       font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+       background:#faf7f2;color:#222;text-align:center}
+  .box{padding:32px 24px;max-width:360px}
+  h1{font-size:22px;margin:0 0 8px}
+  p{color:#666;font-size:14px;margin:0 0 24px}
+  a.btn{display:block;margin:10px 0;padding:14px;border-radius:12px;
+        text-decoration:none;font-weight:600;font-size:15px}
+  .ios{background:#111;color:#fff}
+  .aos{background:#c8102e;color:#fff}
+</style>
+</head>
+<body>
+  <div class="box">
+    <h1>오마카세 일본어</h1>
+    <p>스토어로 이동 중이에요. 자동으로 열리지 않으면 아래 버튼을 눌러 주세요.</p>
+    <a class="btn ios" href="https://apps.apple.com/kr/app/id6834276951">App Store에서 받기</a>
+    <a class="btn aos" href="https://play.google.com/store/apps/details?id=com.dancompany.omakase">Google Play에서 받기</a>
+  </div>
+</body>
+</html>
